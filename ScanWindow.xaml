@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.Maui"
+             x:Class="AC.ScanWindow"
+             BackgroundColor="#23034a"
+             NavigationPage.HasBackButton="false">
+
+    <StackLayout Spacing="30" Padding="40" VerticalOptions="FillAndExpand">
+        <Grid ColumnDefinitions="Auto,*">
+            <ImageButton
+                Source="backbtnwhite.png"
+                Clicked="GoBack"
+                Margin="-20,0,0,0"
+                WidthRequest="25"
+                HeightRequest="25"
+                HorizontalOptions="Start"
+                VerticalOptions="Center"/>
+            <Label
+                Grid.Column="1"
+                Text="Сканировать QR-код аудитории"
+                FontSize="17"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                TextColor="White"
+                HorizontalTextAlignment="Center"/>
+        </Grid>
+        <zxing:CameraBarcodeReaderView
+            x:Name="barcodeReader"
+            BarcodesDetected="barcodeReader_BarcodesDetected"
+            HeightRequest="200"
+            WidthRequest="350"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"/>
+        <ImageButton
+            Source="continue_icon.png"
+            HeightRequest="60"
+            Clicked="OnScanWindowButtonClicked"/>
+    </StackLayout>
+</ContentPage>

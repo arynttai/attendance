@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="AC.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:AC"
+    Shell.FlyoutBehavior="Disabled"
+    Title="AC">
+
+    <ShellContent Icon="desktop_icon.png" Route="Desktop">
+        <local:Desktop />
+    </ShellContent>
+
+    <ShellContent Icon="statistics_icon.png" Route="Statistics">
+        <local:Statistics />
+    </ShellContent>
+
+    <Tab Title="Profile" Icon="profile.png">
+        <ShellContent ContentTemplate="{DataTemplate local:Profile}" />
+    </Tab>
+    <Tab Title="Change Profile" Icon="changeprofile.png">
+        <ShellContent ContentTemplate="{DataTemplate local:ChangeProfile}" />
+    </Tab>
+
+
+
+</Shell>

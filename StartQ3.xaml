@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AC.StartQ3"
+             BackgroundColor="#23034a"
+             NavigationPage.HasBackButton="false">
+    <AbsoluteLayout>
+        <VerticalStackLayout Padding="10" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+            <Grid ColumnDefinitions="Auto,*" Padding="5">
+                <ImageButton
+                 Source="backbtnwhite.png"
+                 Clicked="GoBack"
+                 WidthRequest="25"
+                 HeightRequest="25"
+                 HorizontalOptions="Start"
+                 VerticalOptions="Center"/>
+                <Label
+                 Grid.Column="1"
+                 Text="3/4"
+                 FontSize="17"
+                 HorizontalOptions="End"
+                 VerticalOptions="Center"
+                 TextColor="White"/>
+            </Grid>
+            <Image
+                 Source="line34.png"
+                 WidthRequest="380"
+                HeightRequest="55"
+                 Margin="0,0,0,0"/>
+            <Label 
+                Margin="28,10,0,0"
+                Text="Введите данные для проверки"
+                FontSize="15"
+                FontFamily="Gilroy"
+                VerticalOptions="Center" />
+            <Image
+                Source="line.png"
+                WidthRequest="380"/>
+            <VerticalStackLayout Margin="28,0,28,0" Spacing="10">
+                <Entry x:Name="uinEntry" Placeholder="Введите ваш UIN" TextColor="White" PlaceholderColor="#beafcb" />
+                <Entry x:Name="passwordEntry" Placeholder="Введите пароль" IsPassword="True" TextColor="White" PlaceholderColor="#beafcb"/>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+        <ImageButton 
+            Source="continue_icon.png" 
+            Clicked="OnContinueClicked"
+            WidthRequest="180"
+            HeightRequest="50"
+            Margin="0,0,0,30" 
+            AbsoluteLayout.LayoutBounds="0.5,1,130,50"
+            AbsoluteLayout.LayoutFlags="PositionProportional"
+            VerticalOptions="End"
+            HorizontalOptions="Center"/>
+    </AbsoluteLayout>
+</ContentPage>

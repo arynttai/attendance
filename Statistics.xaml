@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AC.Statistics"
+             BackgroundColor="#23034a"
+             NavigationPage.HasBackButton="false">
+
+    <StackLayout Padding="0" Margin="0">
+        <!-- Верхняя часть страницы с фоном -->
+        <Grid>
+            <Image
+                Source="bg6.jpg"
+                Aspect="AspectFill"
+                HeightRequest="70"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"/>
+            <Label
+                Text="Attendance Control" 
+                FontSize="20"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                TextColor="White"/>
+        </Grid>
+
+        <!-- Линия -->
+        <Image
+            Source="line.png"
+            WidthRequest="400"
+            HeightRequest="65"
+            Margin="0,-32,0,0"/>
+
+        <!-- Основной контент -->
+        <ScrollView>
+            <StackLayout Spacing="20" Padding="40" VerticalOptions="StartAndExpand">
+                <Label
+                    Text="Статистика" 
+                    FontSize="30"
+                    FontFamily="Gilroy"
+                    FontAttributes="Bold"
+                    HorizontalOptions="CenterAndExpand"/>
+
+                <!-- Section for student statistics -->
+                <StackLayout x:Name="StudentStatisticsLayout" IsVisible="{Binding IsStudent}">
+                    <Label
+                        Text="Успеваемость студента"
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        HorizontalOptions="CenterAndExpand"/>
+                    <CollectionView x:Name="StudentStatisticsCollectionView">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="10" Margin="5" BackgroundColor="White" ColumnSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Text="{Binding TeacherName}" TextColor="Black" />
+                                    <Label Grid.Column="1" Text="{Binding AttendedClasses}" TextColor="Black" />
+                                    <Label Grid.Column="2" Text="{Binding LateClasses}" TextColor="Black" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+
+                <!-- Section for teacher statistics -->
+                <StackLayout x:Name="TeacherStatisticsLayout" IsVisible="{Binding IsTeacher}">
+                    <Label
+                        Text="Статистика преподавателя"
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        HorizontalOptions="CenterAndExpand"/>
+                    <Label x:Name="CreatedLessonsLabel" Text="Уроки: " FontSize="16" TextColor="White"/>
+                    <Label x:Name="StudentsInLessonsLabel" Text="Студенты: " FontSize="16" TextColor="White"/>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+
+        <!-- Нижняя часть страницы -->
+        <Image
+            Source="lll.png"
+            WidthRequest="430"
+            VerticalOptions="EndAndExpand"
+            Margin="0,0,0,0"/>
+        <HorizontalStackLayout Padding="10" Spacing="70" HorizontalOptions="CenterAndExpand">
+            <ImageButton Source="desktop_icon.png" HeightRequest="50" WidthRequest="50"  Clicked="OnDesktopClicked"/>
+            <ImageButton Source="statistics_icon.png" HeightRequest="60" WidthRequest="60" Clicked="OnStatisticsClicked" />
+            <ImageButton Source="profile_icon.png" HeightRequest="50" WidthRequest="50" Clicked="OnProfileClicked" />
+        </HorizontalStackLayout>
+    </StackLayout>
+</ContentPage>

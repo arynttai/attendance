@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AC.StartQ2"
+             BackgroundColor="#23034a"
+             NavigationPage.HasBackButton="false">
+
+    <AbsoluteLayout>
+        <VerticalStackLayout Padding="10" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+            <Grid ColumnDefinitions="Auto,*" Padding="5">
+                <ImageButton
+                    Source="backbtnwhite.png"
+                    Clicked="GoBack"
+                    WidthRequest="25"
+                    HeightRequest="25"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"/>
+                <Label
+                    Grid.Column="1"
+                    Text="2/4"
+                    FontSize="17"
+                    HorizontalOptions="End"
+                    VerticalOptions="Center"
+                    TextColor="White"/>
+            </Grid>
+            <Image
+                Source="line24.png"
+                WidthRequest="380"
+                HeightRequest="55"
+                Margin="7,0,0,0"/>
+            <Label 
+                Margin="28,10,0,0"
+                Text="Вас зовут..."
+                FontSize="15"
+                FontFamily="Gilroy"
+                VerticalOptions="Center" />
+            <Image
+                Source="line.png"
+                WidthRequest="380"/>
+            <VerticalStackLayout Margin="28,0,28,0" Spacing="10">
+                <Entry Placeholder="Фамилия" x:Name="LastNameEntry" TextColor="White" PlaceholderColor="#beafcb" />
+                <Entry Placeholder="Имя" x:Name="FirstNameEntry" TextColor="White" PlaceholderColor="#beafcb"/>
+                <Entry Placeholder="Отчество" x:Name="PatronymicEntry" TextColor="White" PlaceholderColor="#beafcb"/>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+
+        <ImageButton 
+            Source="continue_icon.png" 
+            Clicked="OnNextClicked" 
+            WidthRequest="180"
+            HeightRequest="50"
+            Margin="0,0,0,30" 
+            AbsoluteLayout.LayoutBounds="0.5,1,130,50"
+            AbsoluteLayout.LayoutFlags="PositionProportional"
+            VerticalOptions="End"
+            HorizontalOptions="Center"/>
+    </AbsoluteLayout>
+</ContentPage>

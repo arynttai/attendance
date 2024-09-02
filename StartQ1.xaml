@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AC.StartQ1"
+             BackgroundColor="#23034a"
+             NavigationPage.HasBackButton="false">
+    <VerticalStackLayout Padding="8">
+        <Grid ColumnDefinitions="Auto,*" Padding="5">
+            <ImageButton
+            Source="backbtnwhite.png"
+            Clicked="GoBack"
+            WidthRequest="25"
+            HeightRequest="25"
+            HorizontalOptions="Start"
+            VerticalOptions="Center"/>
+
+            <Label
+            Grid.Column="1"
+            Text="1/4"
+            FontSize="17"
+            HorizontalOptions="End"
+            VerticalOptions="Center"
+            TextColor="White"/>
+        </Grid>
+        <Image
+            Source="line14.png"
+            WidthRequest="430"
+            Margin="7,0,0,0"/>
+        <Label 
+            Margin="18,10,0,0"
+            Text="Для начала, кем вы являетесь?"
+            FontSize="15"
+            FontFamily="Gilroy"
+            VerticalOptions="Center" 
+            />
+        <Image
+            Source="line.png"
+            WidthRequest="380"/>
+        <Label
+            Margin="18,-10,0,40"
+            Text="Вы можете выбрать только одну роль"
+            FontSize="12"
+            TextColor="#beafcb"
+            HorizontalTextAlignment="Start"
+            FontFamily="Gilroy"
+            VerticalOptions="Center" 
+            />
+        <Grid
+            RowDefinitions="*,*"
+            ColumnDefinitions="*,*"
+            Padding="10"
+            HeightRequest="220"
+             BackgroundColor="Transparent">
+            
+            
+         <ImageButton
+            Grid.Row="0"
+            Grid.Column="0" 
+            Source="teacher.png" 
+            Clicked="OnStudentSelected"
+            WidthRequest="160"
+             HeightRequest="160"
+            VerticalOptions="Center"
+            />
+            
+        <ImageButton
+            Grid.Row="0"
+            Grid.Column="1" 
+            Source="teacherr.png"
+            Clicked="OnTeacherSelected"
+            WidthRequest="170"
+            HeightRequest="170"
+            VerticalOptions="Center"/>
+            
+         <Label 
+            Grid.Row="1"
+            Grid.Column="0" 
+            Text="Студент"
+            FontSize="12"
+            TextColor="#beafcb"
+            FontFamily="Gilroy"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+        />
+        <Label
+            Grid.Row="1" Grid.Column="1" 
+            Text="Преподаватель"
+            FontSize="12"
+            TextColor="#beafcb"
+            FontFamily="Gilroy"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+                />
+        </Grid>
+
+       
+    </VerticalStackLayout>
+</ContentPage>

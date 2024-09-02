@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AC.StartQ4"
+             BackgroundColor="#23034a"
+             NavigationPage.HasBackButton="false">
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Padding="10">
+        <!-- Back button and title -->
+        <Grid ColumnDefinitions="Auto,*" Padding="5" Grid.Row="0">
+            <ImageButton
+                Source="backbtnwhite.png"
+                Clicked="GoBack"
+                WidthRequest="25"
+                HeightRequest="25"
+                HorizontalOptions="Start"
+                VerticalOptions="Center"/>
+            <Label
+                Grid.Column="1"
+                Text="4/4"
+                FontSize="17"
+                HorizontalOptions="End"
+                VerticalOptions="Center"
+                TextColor="White"/>
+        </Grid>
+
+        <!-- Line -->
+        <Image
+             Grid.Row="1"
+             Source="line34.png"
+             WidthRequest="380"
+             HeightRequest="55"
+             Margin="0,0,0,0"/>
+
+        <!-- Content area -->
+        <VerticalStackLayout Grid.Row="2" Spacing="20" VerticalOptions="CenterAndExpand">
+            <!-- Circle image -->
+            <Image
+                Source="check_circle.png"
+                WidthRequest="200"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"/>
+
+            <!-- Text -->
+            <Label 
+                Text="Аутентификация успешно завершена!"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" 
+                HorizontalTextAlignment="Center"
+                FontSize="15"
+                FontAttributes="Bold"
+                TextColor="White"/>
+        </VerticalStackLayout>
+
+        <!-- Button -->
+        <ImageButton 
+            Grid.Row="3"
+            Source="startbig.png"
+            WidthRequest="340"
+            Clicked="OnStartClicked"
+            HorizontalOptions="Center"
+            VerticalOptions="End"/>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,17 @@
+[
+  {
+    "RoomNumber": "101",
+    "Group": "Group A",
+    "TeacherUIN": "987654321098",
+    "StartTime": "2024-07-30T09:00:00",
+    "EndTime": "2024-07-30T10:30:00",
+    "QRCode": "QRCodeData",
+    "Students": [
+      {
+        "UIN": "123456789012",
+        "Status": "present",
+        "PINCodeEntered": true
+      }
+    ]
+  }
+]

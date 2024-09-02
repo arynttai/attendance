@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AC.StartPage"
+             BackgroundColor="#23034a">
+
+    <StackLayout
+        Padding="20"
+        Spacing="10"
+        VerticalOptions="StartAndExpand">
+
+        <Image
+            Margin="0,10,0,0"
+            Source="ac_start_1image.png"
+            Aspect="AspectFit"
+            WidthRequest="400"
+            HorizontalOptions="Center"
+            />
+
+        <Image
+            Source="ac_start_2image.png"
+            Aspect="AspectFit"
+            WidthRequest="40"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Margin="0,20,0,0"/>
+
+        <Label
+            Padding="4"
+            Text="Attendance Control"
+            TextColor="White"
+            FontSize="24"
+            FontFamily="Gilroy"
+            HorizontalTextAlignment="Center" />
+
+        <Label
+            Padding="4"
+            Text="Лёгкий и удобный способ контролировать посещаемость и учебный процесс"
+            TextColor="LightGrey"
+            FontSize="13"
+            FontFamily="Gilroy"
+            HorizontalTextAlignment="Center"/>
+
+        <ImageButton
+            Source="ac_start_btn.png"
+            Aspect="AspectFit"
+            WidthRequest="320"
+            HeightRequest="120"
+            Margin="0,14" 
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Clicked="GoToFirstForm"/>
+    </StackLayout>
+</ContentPage>

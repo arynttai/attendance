@@ -1,0 +1,7 @@
+*.apk filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+bin/Debug/net8.0-android/com.companyname.ac-Signed.apk filter=lfs diff=lfs merge=lfs -text
+bin/Debug/net8.0-android/com.companyname.ac.apk filter=lfs diff=lfs merge=lfs -text
+obj/Debug/net8.0-android/android/bin/com.companyname.ac.apk filter=lfs diff=lfs merge=lfs -text
+obj/Debug/net8.0-android/assets/videobg.mp4 filter=lfs diff=lfs merge=lfs -text
+Resources/Raw/videobg.mp4 filter=lfs diff=lfs merge=lfs -text

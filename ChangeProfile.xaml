@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AC.ChangeProfile"
+             BackgroundColor="#23034a"
+             NavigationPage.HasBackButton="false">
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto">
+        <!-- Верхняя часть страницы с фоном -->
+        <Grid Grid.Row="0">
+            <Image
+                Source="bg6.jpg"
+                Aspect="AspectFill"
+                HeightRequest="70"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"/>
+            <Label
+                Text="Attendance Control" 
+                FontSize="20"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                TextColor="White"/>
+        </Grid>
+
+        <!-- Линия -->
+        <Image
+            Grid.Row="1"
+            Source="line.png"
+            WidthRequest="400"
+            HeightRequest="65"
+            Margin="0,-32,0,0"/>
+
+        <!-- Основной контент -->
+        <ScrollView Grid.Row="2" Padding="40" VerticalOptions="FillAndExpand">
+            <StackLayout Spacing="20">
+                <Label
+                    Text="Профиль" 
+                    FontSize="30"
+                    FontFamily="Gilroy"
+                    FontAttributes="Bold"
+                    HorizontalOptions="CenterAndExpand"/>
+                <Image
+                    x:Name="profileImage"
+                    Source="useredit.png"
+                    HeightRequest="200"
+                    Margin="50,0,0,0"
+                    VerticalOptions="CenterAndExpand"/>
+                <VerticalStackLayout Spacing="20">
+
+                    <Entry 
+                        x:Name="firstNameLabel" 
+                        HorizontalTextAlignment="Center" 
+                        Placeholder="Фамилия: Иванов"
+                        PlaceholderColor="#beafcb"
+                        IsReadOnly="True"/>
+                    <!-- Make this field non-editable -->
+                    <Image
+                        Source="line.png"
+                        WidthRequest="400"
+                        HeightRequest="65"
+                        Margin="0,-32,0,-32"/>
+                    <Entry 
+                        x:Name="lastNameLabel" 
+                        HorizontalTextAlignment="Center" 
+                        Placeholder="Имя: Иван"
+                        PlaceholderColor="#beafcb"
+                        IsReadOnly="True"/>
+                    <!-- Make this field non-editable -->
+                    <Image
+                        Source="line.png"
+                        WidthRequest="400"
+                        HeightRequest="65"
+                        Margin="0,-32,0,-32"/>
+                    <Entry 
+                        x:Name="patronymicLabel" 
+                        HorizontalTextAlignment="Center" 
+                        Placeholder="Отчество: Иванович"
+                        PlaceholderColor="#beafcb"
+                        IsReadOnly="True"/>
+                    <!-- Make this field non-editable -->
+                    <Image
+                        Source="line.png"
+                        WidthRequest="400"
+                        HeightRequest="65"
+                        Margin="0,-32,0,-32"/>
+                    <Entry 
+                        x:Name="emailLabel" 
+                        HorizontalTextAlignment="Center" 
+                        Placeholder="Email: ivanov@gmail.com"
+                        Keyboard="Email" 
+                        PlaceholderColor="#beafcb"/>
+                    <!-- Editable field -->
+                    <Image
+                        Source="line.png"
+                        WidthRequest="400"
+                        HeightRequest="65"
+                        Margin="0,-32,0,-32"/>
+                    <Entry 
+                        x:Name="phoneNumberLabel" 
+                        HorizontalTextAlignment="Center" 
+                        Placeholder="Номер телефона: +77087477777"
+                        Keyboard="Telephone"
+                        PlaceholderColor="#beafcb"/>
+                    <!-- Editable field -->
+                    <Image
+                        Source="line.png"
+                        WidthRequest="400"
+                        HeightRequest="65"
+                        Margin="0,-32,0,-32"/>
+                    <Label
+                        x:Name="roleLabel" 
+                        HorizontalTextAlignment="Center" 
+                        Text="Должность: Преподаватель"
+                        TextColor="#beafcb"/>
+                    <Image
+                        Source="line.png"
+                        WidthRequest="400"
+                        HeightRequest="65"
+                        Margin="0,-32,0,-32"/>
+                </VerticalStackLayout>
+
+                <!-- Кнопки и подписи -->
+                <Grid ColumnDefinitions="*,*" Margin="0,20,0,0">
+                    <!-- Отмена кнопка и подпись -->
+                    <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center">
+                        <ImageButton
+                            Source="ban.png"
+                            Clicked="OnCancelClicked"
+                            HeightRequest="40"
+                            WidthRequest="100"
+                            HorizontalOptions="Center"/>
+                        <Label
+                            Text="Отмена"
+                            HorizontalOptions="Center"
+                            TextColor="#beafcb"
+                            FontSize="10"
+                            Padding="5"
+                            VerticalOptions="Start"/>
+                    </VerticalStackLayout>
+
+                    <!-- Сохранить кнопка и подпись -->
+                    <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center">
+                        <ImageButton 
+                            Source="folder.png"
+                            HeightRequest="40"
+                            WidthRequest="100"
+                            Clicked="OnSaveClicked"
+                            HorizontalOptions="Center"/>
+                        <Label
+                            Text="Сохранить"
+                            TextColor="#beafcb"
+                            FontSize="10"
+                            Padding="5"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Start"/>
+                    </VerticalStackLayout>
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+
+        <!-- Нижняя часть страницы -->
+        <Grid Grid.Row="3">
+            <Image
+                Source="lll.png"
+                WidthRequest="430"
+                VerticalOptions="EndAndExpand"
+                Margin="0,0,0,0"/>
+        </Grid>
+        <Grid Grid.Row="4">
+            <HorizontalStackLayout Padding="10" Spacing="70" HorizontalOptions="CenterAndExpand">
+                <ImageButton Source="desktop_icon.png" HeightRequest="50" WidthRequest="50"  Clicked="OnDesktopClicked"/>
+                <ImageButton Source="statistics_icon.png" HeightRequest="60" WidthRequest="60" Clicked="OnStatisticsClicked" />
+                <ImageButton Source="profile_icon.png" HeightRequest="50" WidthRequest="50" Clicked="OnProfileClicked" />
+            </HorizontalStackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>

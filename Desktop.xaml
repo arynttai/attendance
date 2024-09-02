@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="AC.Desktop"
+             BackgroundColor="#23034a"
+             NavigationPage.HasBackButton="false">
+
+    <StackLayout Padding="0" Margin="0">
+        <!-- Верхняя часть страницы с фоном -->
+        <Grid>
+            <Image
+                Source="bg6.jpg"
+                Aspect="AspectFill"
+                HeightRequest="70"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"/>
+            <Label
+                Text="Attendance Control" 
+                FontSize="20"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                TextColor="White"/>
+        </Grid>
+
+        <!-- Линия -->
+        <Image
+            Source="line.png"
+            WidthRequest="400"
+            HeightRequest="65"
+            Margin="0,-32,0,0"/>
+
+        <!-- Основной контент -->
+        <StackLayout Spacing="50" HeightRequest="400" Padding="40" VerticalOptions="StartAndExpand">
+            <Label
+        Text="Главная" 
+        FontSize="30"
+        FontFamily="Gilroy"
+        FontAttributes="Bold"
+        HorizontalOptions="CenterAndExpand"/>
+            <ImageButton
+        Source="icon_qr.png"
+        HeightRequest="220"
+        Clicked="OnLessonButtonClicked"
+        VerticalOptions="CenterAndExpand"/>
+            <Label
+        Text="Сканировать QR аудитории" 
+        FontSize="13"
+        TextColor="#beafcb"
+        FontFamily="GilroyThin"
+        HorizontalOptions="CenterAndExpand"/>
+        </StackLayout>
+
+
+        <!-- Нижняя часть страницы -->
+        <Image
+            Source="lll.png"
+            WidthRequest="430"
+            VerticalOptions="EndAndExpand"
+            Margin="0,0,0,0"/>
+        <HorizontalStackLayout Padding="10" Spacing="70" HorizontalOptions="CenterAndExpand">
+            <ImageButton Source="desktop_icon.png" HeightRequest="50" WidthRequest="50"  Clicked="OnDesktopClicked"/>
+            <ImageButton Source="statistics_icon.png" HeightRequest="60" WidthRequest="60" Clicked="OnStatisticsClicked" />
+            <ImageButton Source="profile_icon.png" HeightRequest="50" WidthRequest="50" Clicked="OnProfileClicked" />
+        </HorizontalStackLayout>
+    </StackLayout>
+</ContentPage>

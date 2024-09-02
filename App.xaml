@@ -1,0 +1,44 @@
+﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AC"
+             x:Class="AC.App">
+    <Application.Resources>
+        
+        <Style TargetType="Label">
+            <Setter Property="FontFamily" Value="Gilroy" />
+            <Setter Property="TextColor" Value="White" />
+        </Style>
+        <Style TargetType="ContentPage">
+            <Setter Property="BackgroundColor" Value="#23034a"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="FontFamily" Value="Gilroy"/>
+            <Setter Property="TextColor" Value="White" />
+        </Style>
+        <Style TargetType="Entry">
+            <Setter Property="FontFamily" Value="Gilroy"/>
+            <Setter Property="TextColor" Value="White" />
+        </Style>
+        <Style TargetType="Editor">
+            <Setter Property="FontFamily" Value="Gilroy"/>
+            <Setter Property="TextColor" Value="White" />
+        </Style>
+        <ResourceDictionary>
+            
+            <DataTemplate x:Key="LessonTemplate">
+                <StackLayout Padding="10" Orientation="Horizontal">
+                    <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
+                        <Label Text="{Binding Number}" FontSize="16" FontAttributes="Bold"/>
+                        <Label Text="{Binding Shift}" FontSize="14"/>
+                        <Label Text="{Binding Time}" FontSize="14"/>
+                        <Label Text="{Binding Group}" FontSize="14"/>
+                        <Label Text="{Binding Teacher}" FontSize="14"/>
+                        <Label Text="{Binding Description}" FontSize="14"/>
+                        <Label Text="{Binding StudentCount}" FontSize="14"/>
+                    </StackLayout>
+                </StackLayout>
+            </DataTemplate>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

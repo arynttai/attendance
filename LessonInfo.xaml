@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AC.LessonInfo"
+             BackgroundColor="#23034a"
+             NavigationPage.HasBackButton="false">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto,Auto" Padding="10">
+
+        <!-- Верхняя часть страницы -->
+        <Grid Grid.Row="0" BackgroundColor="#511896" Padding="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ImageButton
+                Source="backbtnwhite.png"
+                Clicked="GoBack"
+                WidthRequest="30"
+                HeightRequest="30"
+                VerticalOptions="Center"
+                HorizontalOptions="Start"/>
+            <!-- Bind to LessonDate -->
+            <Label
+                Grid.Column="1"
+                Text="{Binding LessonDate, FallbackValue='Date Not Available'}"
+                FontSize="20"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                TextColor="#fff"/>
+        </Grid>
+
+        <!-- Информация о группе и времени -->
+        <Grid Grid.Row="1" Padding="15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <!-- Bind to Group -->
+            <Label
+                Text="{Binding Group, FallbackValue='Group Not Available'}"
+                FontSize="15"
+                HorizontalOptions="Start"
+                VerticalOptions="Center"
+                TextColor="#e3ccff"/>
+            <!-- Bind to LessonTimeRange -->
+            <Label
+                Grid.Column="1"
+                Text="{Binding LessonTimeRange, FallbackValue='Time Not Available'}"
+                FontSize="15"
+                HorizontalOptions="End"
+                VerticalOptions="Center"
+                TextColor="#e3ccff"/>
+        </Grid>
+
+        <!-- Карточка с информацией об уроке -->
+        <Frame Grid.Row="2" BackgroundColor="#fff" Opacity="1" Padding="10" CornerRadius="8" Margin="0,20,0,10">
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*" Padding="8" ColumnSpacing="20">
+                <!-- QR код -->
+                <Image
+                    Grid.RowSpan="6"
+                    Source="qr_example.png"
+                    WidthRequest="80"
+                    HeightRequest="80"
+                    HorizontalOptions="Start"/>
+
+                <!-- Bind to Room -->
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    Text="{Binding Room, FallbackValue='Room Not Available'}"
+                    FontSize="16"
+                    TextColor="#23034a"
+                    VerticalOptions="Center"/>
+
+                <!-- Bind to LessonStartTime -->
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="3"
+                    Text="{Binding LessonStartTime, StringFormat='Время активации: {0:HH:mm}', FallbackValue='Start Time Not Available'}"
+                    FontSize="16"
+                    TextColor="#23034a"
+                    VerticalOptions="Start"/>
+
+                <!-- Bind to LessonEndTime -->
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="4"
+                    Text="{Binding LessonEndTime, StringFormat='Время завершения: {0:HH:mm}', FallbackValue='End Time Not Available'}"
+                    FontSize="16"
+                    TextColor="#23034a"
+                    VerticalOptions="Start"/>
+
+                <!-- Статус -->
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Text="Статус: В процессе"
+                    FontSize="16"
+                    TextColor="#23034a"
+                    VerticalOptions="Center"/>
+
+                <!-- Display the PinCode (Initially Hidden) -->
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Text="{Binding PinCode, StringFormat='PinCode: {0}', FallbackValue='PinCode Not Available'}"
+                    FontSize="16"
+                    TextColor="#23034a"
+                    VerticalOptions="Center"
+                    IsVisible="{Binding IsPinCodeVisible, FallbackValue=False}"/>
+
+                <!-- Количество студентов, которые отсканировались -->
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="5"
+                    Text="{Binding StudentCount, StringFormat='Количество студентов: {0}', FallbackValue='Student Count Not Available'}"
+                    FontSize="16"
+                    TextColor="#23034a"
+                    VerticalOptions="Start"/>
+            </Grid>
+        </Frame>
+
+        <!-- Основная карточка со списком студентов -->
+        <ScrollView Grid.Row="3" VerticalOptions="FillAndExpand">
+            <StackLayout x:Name="StudentsStackLayout" Spacing="8">
+                <!-- The student cards or a message "No students have joined the lesson." will be displayed here -->
+            </StackLayout>
+        </ScrollView>
+
+        <!-- Save Button -->
+        <Button 
+            Grid.Row="4"
+            Text="Save"
+            VerticalOptions="End"
+            WidthRequest="250"
+            BackgroundColor="#511896"
+            TextColor="white"
+            FontSize="18"
+            Padding="5, 10"
+            Clicked="OnSaveBtn"/>
+    </Grid>
+</ContentPage>
