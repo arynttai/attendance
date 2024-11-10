@@ -10,13 +10,15 @@
         <Grid ColumnDefinitions="Auto,*">
             <ImageButton
                 Source="backbtnwhite.png"
-                Clicked="GoBack"
-                Margin="-20,0,0,0"
-                WidthRequest="25"
-                HeightRequest="25"
-                HorizontalOptions="Start"
-                VerticalOptions="Center"/>
-            <Label
+            Clicked="GoBack"
+            Margin="-25,0,0,0"
+            Padding="10" 
+            WidthRequest="70"
+            HeightRequest="70"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            Aspect="AspectFit" />
+                <Label
                 Grid.Column="1"
                 Text="Сканировать QR-код аудитории"
                 FontSize="17"
@@ -32,9 +34,14 @@
             WidthRequest="350"
             HorizontalOptions="FillAndExpand"
             VerticalOptions="FillAndExpand"/>
-        <ImageButton
-            Source="continue_icon.png"
+        <Button
+            Text="Наведи камеру на Qrcode"
+            TextColor="White"
+            BackgroundColor="#6200EE"
+            Clicked="OnCaptureButtonClicked"
             HeightRequest="60"
-            Clicked="OnScanWindowButtonClicked"/>
+            HorizontalOptions="FillAndExpand"/>
+        
     </StackLayout>
+    
 </ContentPage>

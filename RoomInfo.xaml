@@ -5,7 +5,8 @@
              BackgroundColor="#23034a"
              NavigationPage.HasBackButton="false">
 
-    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto">
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto">
+        <!-- Заголовок страницы -->
         <Grid Grid.Row="0">
             <Image
                 Source="bg6.jpg"
@@ -21,6 +22,7 @@
                 TextColor="White"/>
         </Grid>
 
+        <!-- Разделительная линия -->
         <Image
             Grid.Row="1"
             Source="line.png"
@@ -29,6 +31,7 @@
             HorizontalOptions="Center"
             Margin="0,-32,0,0"/>
 
+        <!-- Заголовок списка уроков -->
         <Label
             Grid.Row="2"
             Text="Уроки в этой аудитории" 
@@ -38,26 +41,69 @@
             HorizontalOptions="CenterAndExpand"
             VerticalOptions="Center"/>
 
-        <!-- Adjusted ScrollView to take full available space -->
+        <!-- Список уроков с возможностью прокрутки -->
         <ScrollView Grid.Row="3" Grid.RowSpan="2" Padding="40" VerticalOptions="FillAndExpand">
-            <ListView x:Name="lessonsListView" ItemTapped="OnLessonTapped" BackgroundColor="Transparent" HasUnevenRows="True">
+            <ListView x:Name="lessonsListView" 
+                      ItemTapped="OnLessonTapped" 
+                      BackgroundColor="Transparent" 
+                      HasUnevenRows="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout Padding="10" Orientation="Vertical">
-                                <Label Text="{Binding StartTime, StringFormat='{0:HH:mm}'}" TextColor="White" FontSize="18" />
-                                <Label Text="{Binding EndTime, StringFormat='{0:HH:mm}'}" TextColor="White" FontSize="18" />
-                                <Label Text="{Binding Room}" TextColor="White" FontSize="14" />
-                                <Label Text="{Binding Group}" TextColor="White" FontSize="14" />
-                                <Label Text="{Binding TeacherName}" TextColor="White" FontSize="14" />
-                            </StackLayout>
+                            <Frame BorderColor="White" CornerRadius="10" Padding="10" Margin="0,5">
+                                <StackLayout Padding="10" Orientation="Vertical" Spacing="5">
+                                    <!-- Время начала урока -->
+                                    <Label Text="{Binding StartTimeFormatted}" 
+                                           TextColor="White" 
+                                           FontSize="18" 
+                                           FontAttributes="Bold" />
+                                    <!-- Время окончания урока -->
+                                    <Label Text="{Binding EndTimeFormatted}" 
+                                           TextColor="White" 
+                                           FontSize="18" 
+                                           FontAttributes="Bold" />
+                                    <!-- Аудитория -->
+                                    <Label Text="{Binding Room}" 
+                                           TextColor="White" 
+                                           FontSize="14" />
+                                    <!-- Группа -->
+                                    <Label Text="{Binding Group}" 
+                                           TextColor="White" 
+                                           FontSize="14" />
+                                    <!-- Имя преподавателя -->
+                                    <Label Text="{Binding TeacherName}" 
+                                           TextColor="White" 
+                                           FontSize="14" />
+
+                                    <!-- QR-код для урока -->
+                                    <Image Source="{Binding QRCodeImage}" 
+                                           HorizontalOptions="Center" 
+                                           VerticalOptions="Center" 
+                                           HeightRequest="250"
+                                           WidthRequest="250"/>
+
+                                    <Label TextColor="Yellow" FontSize="16" FontAttributes="Bold">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="PIN Code: " />
+                                                <Span Text="{Binding PinCode}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                            </Frame>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </ScrollView>
+        <!-- Индикатор загрузки -->
+        <StackLayout Grid.Row="3" Grid.RowSpan="2" Padding="40" VerticalOptions="FillAndExpand" HorizontalOptions="Center" Spacing="20">
+            <ActivityIndicator x:Name="loadingIndicator" IsRunning="False" IsVisible="False" Color="White" />
+            <Label x:Name="loadingLabel" Text="Загрузка уроков..." IsVisible="False" TextColor="White" FontSize="18" HorizontalOptions="Center"/>
+        </StackLayout>
 
-        <!-- Moved buttons to a dedicated grid row -->
+        <!-- Кнопки "Назад" и "Новый урок" -->
         <StackLayout Grid.Row="5" Padding="25,0,25,0" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
             <ImageButton
                 Source="backbutton.png"
@@ -75,6 +121,7 @@
                 HorizontalOptions="EndAndExpand"/>
         </StackLayout>
 
+        <!-- Нижний баннер -->
         <Grid Grid.Row="6" BackgroundColor="Transparent">
             <Image
                 Source="lll.png"
@@ -83,6 +130,7 @@
                 HorizontalOptions="Center"/>
         </Grid>
 
+        <!-- Навигационные иконки -->
         <Grid Grid.Row="7" BackgroundColor="Transparent" Margin="0,20,0,0">
             <HorizontalStackLayout Padding="10" Spacing="70" HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
                 <ImageButton Source="desktop_icon" HeightRequest="50" WidthRequest="50" Clicked="OnDesktopClicked"/>

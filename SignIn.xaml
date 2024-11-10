@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AC.SignIn"
+             BackgroundColor="White"
+             NavigationPage.HasBackButton="false">
+    <VerticalStackLayout Padding="20" VerticalOptions="FillAndExpand" Spacing="15">
+
+        <Label 
+            Text="Welcome to Attendance Control!"
+            FontSize="13"
+            TextColor="Black"
+            FontFamily="Inter"
+            FontAttributes="Bold"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"/>
+
+        <Image
+            Source="aitu_logo.png"
+            WidthRequest="180"
+            HeightRequest="130"
+            HorizontalOptions="Center"/>
+
+        <Label 
+            Text="Login to Continue"
+            FontSize="10"
+            FontFamily="Inter"
+            FontAttributes="Bold"
+            TextColor="#828282"
+            HorizontalOptions="Center"/>
+
+        <!-- Поля для ввода данных -->
+        <VerticalStackLayout Margin="0,10,0,0" Spacing="8" HorizontalOptions="Center">
+            <!-- UIN Entry -->
+            <Frame WidthRequest="320"
+                   HeightRequest="40"
+                   CornerRadius="16"
+                   BorderColor="#7CB1FF"
+                   BackgroundColor="Transparent"
+                   HasShadow="False"
+                   Padding="0">
+                <Entry x:Name="uinEntry" 
+                       Placeholder="UIN" 
+                       TextColor="Black" 
+                       PlaceholderColor="#828282" 
+                       FontSize="10"
+                       BackgroundColor="Transparent" 
+                       VerticalOptions="Center"
+                       HorizontalOptions="FillAndExpand"
+                       Margin="10,0"/>
+            </Frame>
+
+            <!-- Password Entry -->
+            <Frame WidthRequest="320"
+                   HeightRequest="40"
+                   CornerRadius="16"
+                   BorderColor="#7CB1FF"
+                   BackgroundColor="Transparent"
+                   HasShadow="False"
+                   Padding="0">
+                <HorizontalStackLayout HorizontalOptions="FillAndExpand" Spacing="0">
+                    <Entry x:Name="passwordEntry" 
+                           Placeholder="Password" 
+                           IsPassword="True" 
+                           TextColor="Black" 
+                           PlaceholderColor="#828282" 
+                           FontSize="10"
+                           WidthRequest="270"
+                           BackgroundColor="Transparent" 
+                           VerticalOptions="Center"
+                           HorizontalOptions="FillAndExpand"
+                           Margin="10,0,0,0"/>
+                    <ImageButton
+                        x:Name="togglePasswordButton"
+                        Source="eye.png"
+                        WidthRequest="24"
+                        HeightRequest="14"
+                        VerticalOptions="Center"
+                        HorizontalOptions="End"
+                        Pressed="OnPasswordButtonPressed"
+                        Released="OnPasswordButtonReleased"/>
+                </HorizontalStackLayout>
+            </Frame>
+
+            <!-- Выбор роли -->
+            <Label 
+                Text="Выберите роль"
+                FontSize="10"
+                FontFamily="Inter"
+                FontAttributes="Bold"
+                TextColor="#828282"
+                HorizontalOptions="Center"
+                Margin="0,8,0,5"/>
+
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                <!-- Кнопка Учитель -->
+                <Button 
+                    x:Name="teacherButton"
+                    Text="Учитель"
+                    BackgroundColor="White"
+                    BorderColor="#7CB1FF"
+                    BorderWidth="1"
+                    CornerRadius="16"
+                    FontFamily="Inter"
+                    FontSize="10"
+                    TextColor="#828282"
+                    Clicked="OnTeacherSelected"
+                    WidthRequest="150"
+                    HeightRequest="40"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"/>
+
+                <!-- Кнопка Студент -->
+                <Button 
+                    x:Name="studentButton"
+                    Text="Студент"
+                    BackgroundColor="White"
+                    BorderColor="#7CB1FF"
+                    BorderWidth="1"
+                    CornerRadius="16"
+                    FontFamily="Inter"
+                    FontSize="10"
+                    TextColor="#828282"
+                    Clicked="OnStudentSelected"
+                    WidthRequest="150"
+                    HeightRequest="40"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"/>
+            </HorizontalStackLayout>
+
+            <!-- Текстовое сообщение про WiFi -->
+            <Label 
+                FontSize="9"
+                FontFamily="Inter"
+                FontAttributes="Bold"
+                TextColor="#828282"
+                HorizontalOptions="Start"
+                Margin="15,5">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Пожалуйста, подключитесь к WIFI (Study, WiFi-Guest, Office)" FontAttributes="Bold, Italic" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </VerticalStackLayout>
+
+        <!-- Кнопка Sign In -->
+        <Button 
+            Text="Sign In"
+            Clicked="OnContinueClicked"
+            WidthRequest="320"
+            HeightRequest="42"
+            BackgroundColor="#007AFF"
+            CornerRadius="16"
+            FontSize="11"
+            HorizontalOptions="Center"
+            VerticalOptions="CenterAndExpand"/>
+    </VerticalStackLayout>
+</ContentPage>

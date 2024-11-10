@@ -5,24 +5,26 @@ using QRCoder;
 using Npgsql;
 using ZXing;
 using System.Drawing.Imaging;
-
+using AC.AC;
 namespace AC
 {
 	public partial class ScanWindowPrepoda : ContentPage
 	{
 		private readonly Lesson _lesson;
 		private readonly string _pinCode;
-		private readonly string _connectionString = "Host=localhost;Port=5433;Username=postgres;Password=1234;Database=my_database";
+		private readonly string _connectionString = "Host=dpg-csogsqggph6c73braemg-a.oregon-postgres.render.com;Port=5432;Username=delechka;Password=ZSQ5jHTFX2kfJy35JkfxobQ0qYh6ymGG;Database=attendance_9s8z;SslMode=Require;Trust Server Certificate=true";
 		private string role;
 		private string uin;
 		private string lessonId;
+		private string _token;
 
-		public ScanWindowPrepoda(string role, string uin, Lesson lesson)
+		public ScanWindowPrepoda(string role, string uin, string token, Lesson lesson)
 		{
 			InitializeComponent();
 			_lesson = lesson;
 			_pinCode = GenerateOrRetrievePinCode();
 			this.role = role;
+			_token = token;
 			this.uin = uin;
 			this.lessonId = _lesson.LessonId; // Инициализируем lessonId
 		}

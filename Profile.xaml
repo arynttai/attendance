@@ -7,7 +7,7 @@
              NavigationPage.HasBackButton="false">
 
     <Grid RowDefinitions="Auto,Auto,*,Auto,Auto">
-        <!-- Upper part of the page with background -->
+        <!-- Верхняя часть страницы -->
         <Grid Grid.Row="0">
             <Image
                 Source="bg6.jpg"
@@ -23,7 +23,7 @@
                 TextColor="White"/>
         </Grid>
 
-        <!-- Line -->
+        <!-- Линия -->
         <Image
             Grid.Row="1"
             Source="line.png"
@@ -31,7 +31,7 @@
             HeightRequest="65"
             Margin="0,-32,0,0"/>
 
-        <!-- Main Content -->
+        <!-- Основной контент -->
         <ScrollView Grid.Row="2" Padding="40" VerticalOptions="FillAndExpand">
             <StackLayout Spacing="20">
                 <Label
@@ -46,65 +46,17 @@
                     HeightRequest="220"
                     VerticalOptions="CenterAndExpand"/>
                 <VerticalStackLayout Spacing="20">
-                    <Label 
-                        x:Name="firstNameLabel" 
-                        HorizontalTextAlignment="Center" 
-                        Text="Фамилия: "/>
-                    <Image
-                        Source="line.png"
-                        WidthRequest="400"
-                        HeightRequest="65"
-                        Margin="0,-32,0,-32"/>
-                    <Label 
-                        x:Name="lastNameLabel" 
-                        HorizontalTextAlignment="Center" 
-                        Text="Имя: "/>
-                    <Image
-                        Source="line.png"
-                        WidthRequest="400"
-                        HeightRequest="65"
-                        Margin="0,-32,0,-32"/>
-                    <Label 
-                        x:Name="patronymicLabel" 
-                        HorizontalTextAlignment="Center" 
-                        Text="Отчество: "/>
-                    <Image
-                        Source="line.png"
-                        WidthRequest="400"
-                        HeightRequest="65"
-                        Margin="0,-32,0,-32"/>
-                    <Label 
-                        x:Name="emailLabel" 
-                        HorizontalTextAlignment="Center" 
-                        Text="Email: "/>
-                    <Image
-                        Source="line.png"
-                        WidthRequest="400"
-                        HeightRequest="65"
-                        Margin="0,-32,0,-32"/>
-                    <Label 
-                        x:Name="phoneNumberLabel" 
-                        HorizontalTextAlignment="Center" 
-                        Text="Номер телефона: "/>
-                    <Image
-                        Source="line.png"
-                        WidthRequest="400"
-                        HeightRequest="65"
-                        Margin="0,-32,0,-32"/>
-                    <Label 
-                        x:Name="roleLabel" 
-                        HorizontalTextAlignment="Center" 
-                        Text="Должность: "/>
-                    <Image
-                        Source="line.png"
-                        WidthRequest="400"
-                        HeightRequest="65"
-                        Margin="0,-32,0,-32"/>
+                    <Label x:Name="firstNameLabel" HorizontalTextAlignment="Center" Text="Имя: "/>
+                    <Label x:Name="lastNameLabel" HorizontalTextAlignment="Center" Text="Фамилия: "/>
+                    <Label x:Name="patronymicLabel" HorizontalTextAlignment="Center" Text="Отчество: "/>
+                    <Label x:Name="emailLabel" HorizontalTextAlignment="Center" Text="Email: "/>
+                    <Label x:Name="phoneNumberLabel" HorizontalTextAlignment="Center" Text="Номер телефона: "/>
+                    <Label x:Name="roleLabel" HorizontalTextAlignment="Center" Text="Роль: "/>
                 </VerticalStackLayout>
 
-                <!-- Buttons and Captions -->
+                <!-- Кнопки -->
                 <Grid ColumnDefinitions="*,*" Margin="0,20,0,0">
-                    <!-- Edit Button and Caption -->
+                    <!-- Кнопка редактирования -->
                     <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center">
                         <ImageButton
                             Source="editbtn.png"
@@ -117,43 +69,43 @@
                             HorizontalOptions="Center"
                             TextColor="#beafcb"
                             FontSize="10"
-                            Padding="5"
-                            VerticalOptions="Start"/>
+                            Padding="5"/>
                     </VerticalStackLayout>
 
-                    <!-- Log Out Button and Caption -->
+                    <!-- Кнопка выхода -->
                     <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center">
                         <ImageButton 
                             Source="logoutbtn.png"
+                            Clicked="OnLogOutClicked"
                             HeightRequest="40"
                             WidthRequest="100"
-                            Clicked="OnLogOutClicked"
                             HorizontalOptions="Center"/>
                         <Label
                             Text="Выйти из аккаунта"
                             TextColor="#beafcb"
                             FontSize="10"
                             Padding="5"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Start"/>
+                            HorizontalOptions="Center"/>
                     </VerticalStackLayout>
                 </Grid>
             </StackLayout>
         </ScrollView>
-
-        <!-- Lower part of the page -->
+        <StackLayout Grid.Row="3" Grid.RowSpan="2" Padding="40" VerticalOptions="FillAndExpand" HorizontalOptions="Center" Spacing="20">
+            <ActivityIndicator x:Name="loadingIndicator" IsRunning="False" IsVisible="False" Color="White" />
+            <Label x:Name="loadingLabel" Text="Загрузка уроков..." IsVisible="False" TextColor="White" FontSize="18" HorizontalOptions="Center"/>
+        </StackLayout>
+        <!-- Нижняя часть страницы -->
         <Grid Grid.Row="3">
             <Image
                 Source="lll.png"
                 WidthRequest="430"
-                VerticalOptions="EndAndExpand"
-                Margin="0,0,0,0"/>
+                VerticalOptions="EndAndExpand"/>
         </Grid>
         <Grid Grid.Row="4">
             <HorizontalStackLayout Padding="10" Spacing="70" HorizontalOptions="CenterAndExpand">
-                <ImageButton Source="desktop_icon.png" HeightRequest="50" WidthRequest="50"  Clicked="OnDesktopClicked"/>
-                <ImageButton Source="statistics_icon.png" HeightRequest="60" WidthRequest="60" Clicked="OnStatisticsClicked" />
-                <ImageButton Source="profile_icon.png" HeightRequest="50" WidthRequest="50" Clicked="OnProfileClicked" />
+                <ImageButton Source="desktop_icon.png" HeightRequest="50" WidthRequest="50" Clicked="OnDesktopClicked"/>
+                <ImageButton Source="statistics_icon.png" HeightRequest="60" WidthRequest="60" Clicked="OnStatisticsClicked"/>
+                <ImageButton Source="profile_icon.png" HeightRequest="50" WidthRequest="50" Clicked="OnProfileClicked"/>
             </HorizontalStackLayout>
         </Grid>
     </Grid>

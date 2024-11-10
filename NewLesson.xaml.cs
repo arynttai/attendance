@@ -1,8 +1,9 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using AC.AC.AC;
 using Microsoft.Maui.Controls;
-
+using AC.AC;
 namespace AC
 {
 	public partial class NewLesson : ContentPage
@@ -11,44 +12,30 @@ namespace AC
 		private readonly UserService _userService;
 		private readonly string _role;
 		private readonly string _uin;
+		private readonly string _token;
 		private string _teacherFullName;
 
-		public NewLesson(string role, string uin)
+		public NewLesson(string role, string uin, string token)
 		{
 			InitializeComponent();
 			_lessonService = new LessonService();
 			_userService = new UserService();
 			_role = role;
-			_uin = Preferences.Get("UserUIN", uin); // Keep this consistent
+			_uin = uin;
+			_token = token; // добавили токен
 		}
 
 		protected override async void OnAppearing()
 		{
 			base.OnAppearing();
-			await LoadUserDataAsync(); // Async user data loading on page appearance
+			await LoadUserDataAsync();
 		}
 
 		private async Task LoadUserDataAsync()
 		{
-			try
-			{
-				var user = await _userService.GetUserByUINAsync(_uin);
-
-				if (user != null)
-				{
-					// Concatenate the teacher's full name and store it
-					_teacherFullName = $"{user.LastName} {user.FirstName} {user.Patronymic}";
-					teacherLabel.Text = _teacherFullName;
-				}
-				else
-				{
-					await DisplayAlert("Ошибка", "Пользователь не найден.", "OK");
-				}
-			}
-			catch (Exception ex)
-			{
-				await DisplayAlert("Ошибка", $"Произошла ошибка при загрузке данных: {ex.Message}", "OK");
-			}
+			var user = await _userService.GetUserByUINAsync(_uin, _token); // передаем токен
+			_teacherFullName = $"{user.LastName} {user.FirstName} {user.Patronymic}";
+			teacherLabel.Text = _teacherFullName;
 		}
 
 		private async void OnSaveClicked(object sender, EventArgs e)
@@ -56,24 +43,22 @@ namespace AC
 			var newLesson = new Lesson
 			{
 				LessonId = Guid.NewGuid().ToString(),
-				TeacherUIN = _uin, // Устанавливаем UIN текущего учителя
-				Teacher = _teacherFullName, // Assign the teacher's full name
+				TeacherUIN = _uin,
+				Teacher = _teacherFullName,
 				StartTime = DateTime.Today.Add(startTimePicker.Time),
 				EndTime = DateTime.Today.Add(endTimePicker.Time),
 				Room = roomEntry.Text,
-				Group = groupPicker.SelectedItem?.ToString(), // Группа, если она выбрана
+				Group = groupPicker.SelectedItem?.ToString(),
 				Description = descriptionEntry.Text
 			};
 
-			await _lessonService.AddLessonAsync(newLesson);
-
-			// Navigate to ScanWindowPrepoda and pass the lesson data for QR code generation
-			await Navigation.PushAsync(new ScanWindowPrepoda(_role, _uin, newLesson));
+			await _lessonService.AddLessonAsync(newLesson, _token); // передаем токен при создании урока
+			await Navigation.PushAsync(new ScanWindowPrepoda(_role, _uin, _token, newLesson)); // передаем токен
 		}
-
 		private async void GoBack(object sender, EventArgs e)
 		{
 			await Navigation.PopAsync();
 		}
 	}
+
 }

@@ -26,7 +26,7 @@
         </Grid>
 
         <!-- QR-код -->
-        <Image x:Name="QRCodeImage" WidthRequest="200" HeightRequest="200" HorizontalOptions="Center" VerticalOptions="Center" />
+        <Image x:Name="QRCodeImage" WidthRequest="500" HeightRequest="500" HorizontalOptions="Center" VerticalOptions="Center" />
 
         <!-- Display PIN code -->
         <Label x:Name="PinCodeLabel" Text="PIN-код: " TextColor="White" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center"/>

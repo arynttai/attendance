@@ -2,7 +2,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Maui.Controls;
-
+using AC.AC;
+using AC.AC.AC;
 namespace AC
 {
 	public partial class LessonsPage : ContentPage
@@ -10,6 +11,7 @@ namespace AC
 		private readonly string _role;
 		private readonly string _uin;
 		private readonly string _group;
+		private readonly string _token;
 		private readonly LessonService _lessonService;
 
 		public LessonsPage(string role, string uin, string group = null)
@@ -89,7 +91,7 @@ namespace AC
 
 		private async void OnAddLessonClicked(object sender, EventArgs e)
 		{
-			await Navigation.PushAsync(new AddLessonPage(_role, _uin)); // Assume you have a page for adding lessons
+			await Navigation.PushAsync(new AddLessonPage(_role, _uin , _token)); // Assume you have a page for adding lessons
 		}
 	}
 
@@ -98,7 +100,7 @@ namespace AC
 		private string role;
 		private string uin;
 
-		public AddLessonPage(string role, string uin)
+		public AddLessonPage(string role, string uin , string token)
 		{
 			this.role = role;
 			this.uin = uin;

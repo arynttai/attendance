@@ -13,6 +13,9 @@ namespace AC
 	{
 		private readonly string _role;
 		private readonly string _uin;
+		private readonly string _token;
+		private string role;
+		private string uin;
 
 		// Конструктор по умолчанию с инициализацией значений по умолчанию для role и uin
 		public Statistics() : this("defaultRole", "defaultUIN")
@@ -20,27 +23,34 @@ namespace AC
 		}
 
 		// Основной конструктор с параметрами role и uin
-		public Statistics(string role, string uin)
+		public Statistics(string role, string uin, string token)
 		{
 			InitializeComponent();
 			_role = role;
+			_token = token;
 			_uin = uin;
 			LoadStatistics();
 		}
 
+		public Statistics(string role, string uin)
+		{
+			this.role = role;
+			this.uin = uin;
+		}
+
 		private async void OnStatisticsClicked(object sender, EventArgs e)
 		{
-			await Navigation.PushAsync(new Statistics(_role, _uin));  // Передача обоих параметров
+			await Navigation.PushAsync(new Statistics(_role, _uin , _token));  // Передача обоих параметров
 		}
 
 		private async void OnDesktopClicked(object sender, EventArgs e)
 		{
-			await Navigation.PushAsync(new Desktop(_role, _uin));  // Передача обоих параметров
+			await Navigation.PushAsync(new Desktop(_role, _uin , _token));  // Передача обоих параметров
 		}
 
 		private async void OnProfileClicked(object sender, EventArgs e)
 		{
-			await Navigation.PushAsync(new Profile(_role, _uin));  // Передача обоих параметров
+			await Navigation.PushAsync(new Profile(_role, _uin , _token));  // Передача обоих параметров
 		}
 
 		private async void LoadStatistics()
@@ -57,7 +67,7 @@ namespace AC
 
 		private async Task LoadStudentStatistics()
 		{
-			const string connectionString = "Host=localhost;Port=5433;Username=postgres;Password=1234;Database=my_database";
+			const string connectionString = "Host=dpg-csogsqggph6c73braemg-a.oregon-postgres.render.com;Port=5432;Username=delechka;Password=ZSQ5jHTFX2kfJy35JkfxobQ0qYh6ymGG;Database=attendance_9s8z;SslMode=Require;Trust Server Certificate=true";
 
 			using (var connection = new NpgsqlConnection(connectionString))
 			{
@@ -84,7 +94,7 @@ namespace AC
 
 		private async Task LoadTeacherStatistics()
 		{
-			const string connectionString = "Host=localhost;Port=5433;Username=postgres;Password=1234;Database=my_database";
+			const string connectionString = "Host=dpg-csogsqggph6c73braemg-a.oregon-postgres.render.com;Port=5432;Username=delechka;Password=ZSQ5jHTFX2kfJy35JkfxobQ0qYh6ymGG;Database=attendance_9s8z;SslMode=Require;Trust Server Certificate=true";
 
 			using (var connection = new NpgsqlConnection(connectionString))
 			{

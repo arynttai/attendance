@@ -34,6 +34,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="NewFolder\**" />
+	  <Compile Remove="NewFolder\**" />
+	  <EmbeddedResource Remove="NewFolder\**" />
+	  <MauiCss Remove="NewFolder\**" />
+	  <MauiXaml Remove="NewFolder\**" />
+	  <None Remove="NewFolder\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<MauiAsset Remove="Resources\Raw\AboutAssets.txt" />
 	</ItemGroup>
 
@@ -44,16 +53,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
+		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.0.2" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.2" />
+		<PackageReference Include="Xamarin.Essentials" Version="1.8.1" />
 		<PackageReference Include="ZXing.Net.Maui.CG" Version="1.0.2" />
-		<PackageReference Include="CameraMaui" Version="1.4.8" />
-		<PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="4.0.1" />
+		<PackageReference Include="CameraMaui" Version="1.4.9" />
+		<PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="4.1.1" />
 		<PackageReference Include="Dapper" Version="2.1.35" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.82" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.82" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.90" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.90" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-		<PackageReference Include="Microsoft.Maui.Essentials" Version="8.0.82" />
-		<PackageReference Include="Microsoft.Maui.Graphics" Version="8.0.82" />
-		<PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="8.0.82" />
+		<PackageReference Include="Microsoft.Maui.Essentials" Version="8.0.90" />
+		<PackageReference Include="Microsoft.Maui.Graphics" Version="8.0.90" />
+		<PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="8.0.90" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Npgsql" Version="8.0.3" />
 		<PackageReference Include="QRCoder" Version="1.6.0" />
@@ -88,10 +102,7 @@
 		<MauiXaml Update="StartQ1.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="StartQ2.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="StartQ3.xaml">
+		<MauiXaml Update="SignIn.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="StartQ4.xaml">
@@ -104,7 +115,12 @@
 
 	<ItemGroup>
 		<Folder Include="NewFolder1\" />
-		<Folder Include="NewFolder\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="SignIn.xaml.cs">
+	    <DependentUpon>SignIn.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 </Project>

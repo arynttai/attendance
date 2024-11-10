@@ -22,3 +22,10 @@
 
 }
 */
+public class FailedLoginAttempt
+{
+	public string UIN { get; set; }  // UIN пользователя
+	public int AttemptCount { get; set; }  // Количество неудачных попыток
+	public DateTime LastAttemptTime { get; set; }  // Время последней неудачной попытки
+	public bool IsLocked => AttemptCount >= 5 && DateTime.Now < LastAttemptTime.AddMinutes(15); // Блокировка на 15 минут
+}

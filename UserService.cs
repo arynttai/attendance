@@ -1,117 +1,186 @@
 ﻿using System;
-using System.Threading.Tasks;
-using Npgsql;
-using Dapper;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
-using System.Security.Cryptography;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Microsoft.Maui;
+using System.Diagnostics;
 
 namespace AC
 {
 	public class UserService
 	{
-		private readonly string _connectionString;
+		private readonly HttpClient _httpClient;
 
 		public UserService()
 		{
-			_connectionString = "Host=localhost;Port=5433;Username=postgres;Password=1234;Database=my_database";
-		}
-
-		public async Task<User> GetUserByUINAsync(string uin)
-		{
-			using (var connection = new NpgsqlConnection(_connectionString))
+			_httpClient = new HttpClient
 			{
-				await connection.OpenAsync();
-
-				string query = @"
-            SELECT role AS Role, last_name AS LastName, first_name AS FirstName, patronymic AS Patronymic, uin, email, phone_number AS PhoneNumber, id_card AS IdCard, Password
-            FROM users
-            WHERE CAST(uin AS TEXT) = @UIN";
-
-				Console.WriteLine($"Executing query: {query}");
-				Console.WriteLine($"With parameter: UIN = {uin}");
-
-				var user = await connection.QueryFirstOrDefaultAsync<User>(query, new { UIN = uin });
-
-				if (user == null)
-				{
-					Console.WriteLine("Пользователь не найден.");
-					throw new Exception("Пользователь не найден.");
-				}
-
-				Console.WriteLine($"Пользователь найден: {user.LastName} {user.FirstName}");
-				return user;
-			}
+				BaseAddress = new Uri("https://appapa-cugq.onrender.com") // Replace with your actual API address
+			};
 		}
 
-
-		public bool VerifyPassword(string enteredPassword, string storedPassword)
+		public async Task<LoginResponse> LoginAsync(string uin, string password)
 		{
-			return enteredPassword == storedPassword;
-		}
+			var requestBody = new
+			{
+				UIN = uin,
+				Password = password
+			};
 
-		public static string HashPassword(string password)
-		{
+			var jsonContent = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
+
 			try
 			{
-				using (var sha256 = SHA256.Create())
+				Debug.WriteLine($"Sending UIN: {uin}, Password: {password}");
+
+				var response = await _httpClient.PostAsync("login", jsonContent);
+				var responseBody = await response.Content.ReadAsStringAsync();
+
+				Debug.WriteLine($"Server response: {responseBody}");
+
+				if (!response.IsSuccessStatusCode)
 				{
-					var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-					return Convert.ToBase64String(hashedBytes);
+					throw new Exception($"Request failed: {response.StatusCode}. Server response: {responseBody}");
 				}
+
+				var loginResponse = JsonSerializer.Deserialize<LoginResponse>(responseBody, new JsonSerializerOptions
+				{
+					PropertyNameCaseInsensitive = true
+				});
+
+				if (loginResponse == null || string.IsNullOrEmpty(loginResponse.Token))
+				{
+					throw new Exception("Некорректный ответ сервера: отсутствует токен.");
+				}
+
+				Debug.WriteLine($"Received JWT Token: {loginResponse.Token}");
+
+				// Save token locally
+				Preferences.Set("auth_token", loginResponse.Token);
+
+				return loginResponse;
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine($"Ошибка при хэшировании пароля: {ex.Message}");
-				throw new Exception("Произошла ошибка при обработке пароля.");
+				Debug.WriteLine($"Error processing the login request: {ex.Message}");
+				throw new Exception($"Ошибка обработки запроса на вход: {ex.Message}");
 			}
 		}
 
-		public async Task UpdateUserAsync(User updatedUser)
+
+
+
+		public async Task<User> GetUserByUINAsync(string uin, string token)
 		{
-			using (var connection = new NpgsqlConnection(_connectionString))
+			var savedToken = Preferences.Get("auth_token", string.Empty);
+
+			Console.WriteLine($"[GetUserByUINAsync] Saved Token: {savedToken}");
+			Console.WriteLine($"[GetUserByUINAsync] Received Token: {token}");
+
+			if (string.IsNullOrEmpty(token))
 			{
-				await connection.OpenAsync();
+				Console.WriteLine("[GetUserByUINAsync] Токен отсутствует");
+				throw new UnauthorizedAccessException("Токен не найден.");
+			}
 
-				string query = @"
-                    UPDATE users
-                    SET email = @Email, phone_number = @PhoneNumber
-                    WHERE CAST(uin AS TEXT) = @UIN";
+			if (!token.Contains(".") || token.Split('.').Length != 3)
+			{
+				Console.WriteLine("[GetUserByUINAsync] Некорректный формат токена");
+				throw new Exception("Некорректный формат JWT-токена.");
+			}
 
-				var parameters = new
+			// Устанавливаем токен в заголовок Authorization
+			_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+			try
+			{
+				Console.WriteLine($"[GetUserByUINAsync] Отправляем запрос с токеном длиной: {token.Length}");
+				var response = await _httpClient.GetAsync($"https://appapa-cugq.onrender.com/api/User/{uin}");
+
+				var responseBody = await response.Content.ReadAsStringAsync();
+				Console.WriteLine($"[GetUserByUINAsync] Ответ API: {response.StatusCode}, Тело: {responseBody}");
+
+				if (!response.IsSuccessStatusCode)
 				{
-					Email = updatedUser.Email,
-					PhoneNumber = updatedUser.PhoneNumber,
-					UIN = updatedUser.UIN
-				};
-
-				Console.WriteLine($"Executing update query: {query}");
-				Console.WriteLine($"With parameters: Email = {updatedUser.Email}, PhoneNumber = {updatedUser.PhoneNumber}, UIN = {updatedUser.UIN}");
-
-				int rowsAffected = await connection.ExecuteAsync(query, parameters);
-
-				if (rowsAffected == 0)
-				{
-					Console.WriteLine("Пользователь не найден или обновление не было выполнено.");
-					throw new Exception("Пользователь не найден или обновление не было выполнено.");
+					Console.WriteLine($"[GetUserByUINAsync] Ошибка при получении пользователя: {response.StatusCode}, Ответ: {responseBody}");
+					throw new Exception($"Ошибка при получении пользователя: {response.StatusCode}");
 				}
 
-				Console.WriteLine($"Обновлено строк: {rowsAffected}");
+				var user = JsonSerializer.Deserialize<User>(responseBody, new JsonSerializerOptions
+				{
+					PropertyNameCaseInsensitive = true
+				});
+
+				if (user == null)
+				{
+					throw new Exception("Пользователь не найден или ответ сервера пуст.");
+				}
+
+				return user;
+			}
+			catch (HttpRequestException ex)
+			{
+				Console.WriteLine($"[GetUserByUINAsync] Ошибка при выполнении HTTP-запроса: {ex.Message}");
+				throw;
+			}
+			catch (UnauthorizedAccessException ex)
+			{
+				Console.WriteLine($"[GetUserByUINAsync] Ошибка аутентификации: {ex.Message}");
+				throw;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"[GetUserByUINAsync] Общая ошибка: {ex.Message}");
+				throw;
 			}
 		}
+
+		public async Task<bool> UpdateUserAsync(User user, string _token)
+		{
+			var token = Preferences.Get("auth_token", string.Empty);
+			if (string.IsNullOrEmpty(token))
+			{
+				throw new UnauthorizedAccessException("Токен не найден.");
+			}
+
+			_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+			var jsonContent = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
+			Console.WriteLine($"[UpdateUserAsync] Updating user with UIN: {user.UIN} and Token: {token}");
+			var response = await _httpClient.PatchAsync($"user/{user.UIN}", jsonContent);
+
+			return response.IsSuccessStatusCode;
+		}
+
+
+	}
+
+
+	public class LoginResponse
+	{
+		public string Token { get; set; }
+		public string Message { get; set; }
+	}
+
+	public class User
+	{
+		public string Role { get; set; }        // "teacher" or "student"
+		public string LastName { get; set; }
+		public string FirstName { get; set; }
+		public string Patronymic { get; set; }
+		public string UIN { get; set; }         // Unique Identification Number
+		public string Email { get; set; }
+		public string PhoneNumber { get; set; }
+		public string IdCard { get; set; }
+		public string Password { get; set; }
+		public string Group { get; set; }       // For students, e.g., "2209". Null for teachers.
+	}
+
+	public class LoginRequest
+	{
+		public string UIN { get; set; }
+		public string Password { get; set; }
 	}
 }
-
-public class User
-{
-	public string Role { get; set; }        // "teacher" or "student"
-	public string LastName { get; set; }
-	public string FirstName { get; set; }
-	public string Patronymic { get; set; }
-	public string UIN { get; set; }         // Unique Identification Number
-	public string Email { get; set; }
-	public string PhoneNumber { get; set; }
-	public string IdCard { get; set; }
-	public string Password { get; set; }
-	public string Group { get; set; }       // For students, e.g., "2209". Null for teachers.
-}
-
