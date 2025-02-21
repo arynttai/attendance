@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AC.NewLesson"
-             BackgroundColor="#23034a"
+             BackgroundColor="White"
              NavigationPage.HasBackButton="false">
 
     <Grid Padding="20" RowSpacing="20">
@@ -11,116 +11,81 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Верхняя часть страницы -->
-        <Grid Grid.Row="0" BackgroundColor="#511896" Padding="8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <ImageButton
-                Source="backbtnwhite.png"
-                Clicked="GoBack"
-                WidthRequest="30"
-                HeightRequest="30"
-                VerticalOptions="Center"
-                HorizontalOptions="Start"/>
-            <Label
-                Grid.Column="1"
-                Text="Новый урок"
-                FontSize="18"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                TextColor="white"/>
-        </Grid>
+        <VerticalStackLayout 
+                Margin="0,15">
+            <Grid ColumnDefinitions="Auto,*" Padding="0" >
+                <ImageButton
+                    Source="back.png"
+                    Clicked="GoBack"
+                    WidthRequest="25"
+                    HeightRequest="25"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"/>
+                <Label
+                    Text="Новый урок" 
+                    FontSize="17"
+                    
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    TextColor="#201F1F"
+                    Grid.Column="1"/>
+            </Grid>
+        </VerticalStackLayout>
 
-        <!-- Форма для добавления нового урока -->
-        <StackLayout Grid.Row="1" Spacing="15" Padding="0, 30, 0, 0">
+        <StackLayout Grid.Row="1" Spacing="20" Padding="15">
+            <Frame WidthRequest="330" HeightRequest="50" CornerRadius="16" BackgroundColor="#EEF2F6" HasShadow="False" Padding="0">
+                <Label
+                    x:Name="teacherLabel"
+                    Text="Загрузка..."
+                    TextColor="#424554"
+                    FontSize="16"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"/>
+            </Frame>
 
-            <!-- Label for displaying the teacher's full name (ФИО) -->
-            <Label
-                x:Name="teacherLabel"
-                TextColor="#fff"
-                BackgroundColor="#380c6e"
-                FontSize="14"
-                HeightRequest="40"
-                VerticalTextAlignment="Center"
-                Margin="0,0,0,20"
-                HorizontalOptions="FillAndExpand"/>
+            <Frame WidthRequest="330" HeightRequest="50" CornerRadius="16" BackgroundColor="#EEF2F6" HasShadow="False" Padding="0">
+                <Label
+                    x:Name="roomEntry"
+                    TextColor="#424554"
+                    FontSize="16"
+                    Text="{Binding Room}"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"/>
+            </Frame>
 
-            <TimePicker
-        x:Name="startTimePicker"
-        Format="HH:mm"
-                    TextColor="#beafcb"
-        BackgroundColor="#380c6e"
-        HeightRequest="40"
-        HorizontalOptions="FillAndExpand"/>
+            <Frame WidthRequest="330" HeightRequest="50" CornerRadius="16" BackgroundColor="#EEF2F6" HasShadow="False" Padding="25,0">
+                <TimePicker x:Name="startTimePicker" Format="HH:mm" TextColor="#424554" FontSize="16" VerticalOptions="CenterAndExpand"/>
+            </Frame>
 
-            <TimePicker
-        x:Name="endTimePicker"
-        Format="HH:mm" 
-                        TextColor="#beafcb"
-        BackgroundColor="#380c6e"
-        HeightRequest="40"
-        HorizontalOptions="FillAndExpand"/>
+            <Frame WidthRequest="330" HeightRequest="50" CornerRadius="16" BackgroundColor="#EEF2F6" HasShadow="False" Padding="25,0">
+                <TimePicker x:Name="endTimePicker" Format="HH:mm" TextColor="#424554" FontSize="16" VerticalOptions="CenterAndExpand"/>
+            </Frame>
 
+            <Frame WidthRequest="330" HeightRequest="50" CornerRadius="16" BackgroundColor="#EEF2F6" HasShadow="False" Padding="25,0">
+                <Picker x:Name="groupPicker" Title="Номер группы" TextColor="#424554" TitleColor="#424554" FontSize="16" />
+            </Frame>
 
-            <Entry
-                x:Name="roomEntry"
-                Placeholder="Аудитория"
-                TextColor="#fff"
-                PlaceholderColor="#beafcb"
-                BackgroundColor="#380c6e"
-                FontSize="14"
-                HeightRequest="40"
-                Margin="0,0,0,20"
-                HorizontalOptions="FillAndExpand"/>
+            <Frame WidthRequest="330" HeightRequest="50" CornerRadius="16" BackgroundColor="#EEF2F6" HasShadow="False" Padding="25,0">
+                <Picker x:Name="subjectPicker" Title="Выберите предмет" TextColor="#424554" TitleColor="#424554" FontSize="16"/>
+            </Frame>
 
-            <!-- Picker for selecting a group -->
-            <Picker
-                x:Name="groupPicker"
-                Title="Выберите группу"
-                TextColor="#fff"
-                BackgroundColor="#380c6e"
-                FontSize="14"
-                HeightRequest="40"
-                Margin="0,0,0,20"
-                HorizontalOptions="FillAndExpand">
-                <!-- Groups from 2201 to 2212 -->
-                <Picker.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>2201</x:String>
-                        <x:String>2202</x:String>
-                        <x:String>2203</x:String>
-                        <x:String>2204</x:String>
-                        <x:String>2205</x:String>
-                        <x:String>2206</x:String>
-                        <x:String>2207</x:String>
-                        <x:String>2208</x:String>
-                        <x:String>2209</x:String>
-                        <x:String>2210</x:String>
-                        <x:String>2211</x:String>
-                        <x:String>2212</x:String>
-                    </x:Array>
-                </Picker.ItemsSource>
-            </Picker>
-
-            <Editor
-                x:Name="descriptionEntry"
-                Placeholder="Описание"
-                TextColor="#fff"
-                PlaceholderColor="#beafcb"
-                BackgroundColor="#380c6e"
-                HeightRequest="100"
-                FontSize="14"/>
+            <Frame WidthRequest="330" HeightRequest="150" CornerRadius="16" BackgroundColor="#EEF2F6" HasShadow="False" Padding="25,0">
+                <Editor x:Name="descriptionEntry" Placeholder="Описание (опционально)" TextColor="#424554" PlaceholderColor="#828282" FontSize="16"/>
+            </Frame>
 
             <Button
+                x:Name="saveButton"
+                BackgroundColor="#3172FF"
                 Text="Сохранить"
+                FontSize="13"
+                
+                FontAttributes="Bold"
+                CornerRadius="18"
+                HeightRequest="50" 
+                WidthRequest="330"
                 Clicked="OnSaveClicked"
-                BackgroundColor="#380c6e"
-                TextColor="#beafcb"
-                FontSize="16"
-                CornerRadius="10"
-                HeightRequest="45"/>
+                Margin="0,0,0,0"
+                />
         </StackLayout>
     </Grid>
 </ContentPage>

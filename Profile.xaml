@@ -1,111 +1,154 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="AC.Profile"
-             BackgroundColor="#23034a"
+             BackgroundColor="#F6F6F5"
              NavigationPage.HasBackButton="false">
 
-    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto">
-        <!-- Верхняя часть страницы -->
-        <Grid Grid.Row="0">
-            <Image
-                Source="bg6.jpg"
-                Aspect="AspectFill"
-                HeightRequest="70"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="FillAndExpand"/>
-            <Label
-                Text="Attendance Control" 
-                FontSize="20"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                TextColor="White"/>
+    <Grid RowDefinitions="Auto, *, Auto">
+        <!-- Header Section -->
+        <Grid BackgroundColor="White" HeightRequest="50" Grid.Row="0">
+            <Label 
+                Text="Профиль" 
+                FontSize="20" 
+                
+                FontAttributes="Bold" 
+                HorizontalOptions="Center" 
+                VerticalOptions="Center" 
+                TextColor="#201F1F"/>
         </Grid>
 
-        <!-- Линия -->
-        <Image
-            Grid.Row="1"
-            Source="line.png"
-            WidthRequest="400"
-            HeightRequest="65"
-            Margin="0,-32,0,0"/>
+        <!-- Main Content -->
+        <ScrollView Grid.Row="1" Padding="20">
+            <VerticalStackLayout Spacing="20" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
 
-        <!-- Основной контент -->
-        <ScrollView Grid.Row="2" Padding="40" VerticalOptions="FillAndExpand">
-            <StackLayout Spacing="20">
-                <Label
-                    Text="Профиль" 
-                    FontSize="30"
-                    FontFamily="Gilroy"
-                    FontAttributes="Bold"
-                    HorizontalOptions="CenterAndExpand"/>
-                <Image
-                    x:Name="profileImage"
-                    Source="profile_icon.png"
-                    HeightRequest="220"
-                    VerticalOptions="CenterAndExpand"/>
-                <VerticalStackLayout Spacing="20">
-                    <Label x:Name="firstNameLabel" HorizontalTextAlignment="Center" Text="Имя: "/>
-                    <Label x:Name="lastNameLabel" HorizontalTextAlignment="Center" Text="Фамилия: "/>
-                    <Label x:Name="patronymicLabel" HorizontalTextAlignment="Center" Text="Отчество: "/>
-                    <Label x:Name="emailLabel" HorizontalTextAlignment="Center" Text="Email: "/>
-                    <Label x:Name="phoneNumberLabel" HorizontalTextAlignment="Center" Text="Номер телефона: "/>
-                    <Label x:Name="roleLabel" HorizontalTextAlignment="Center" Text="Роль: "/>
+                <!-- Full Name -->
+                <Frame BackgroundColor="White" CornerRadius="10" Padding="15">
+                    <VerticalStackLayout Spacing="5">
+                        <Label 
+                            Text="ФИО" 
+                            FontSize="10" 
+                             
+                            FontAttributes="Bold" 
+                            TextColor="#AAADB2" 
+                            TextTransform="Uppercase"/>
+                        <Label 
+                            x:Name="fullNameLabel" 
+                            FontSize="15" 
+                            LineBreakMode="NoWrap"
+                            MaxLines="1"
+                            HorizontalTextAlignment="Start"
+                            TextColor="#201F1F"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Role -->
+                <Frame BackgroundColor="White" CornerRadius="10" Padding="15">
+                    <VerticalStackLayout Spacing="5">
+                        <Label 
+                            Text="ДОЛЖНОСТЬ" 
+                            FontSize="10" 
+                             
+                            FontAttributes="Bold" 
+                            TextColor="#AAADB2" 
+                            TextTransform="Uppercase"/>
+                        <Label 
+                            x:Name="roleLabel" 
+                            Text="Преподаватель" 
+                            FontSize="15" 
+                             
+                            TextColor="#201F1F"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Email -->
+                <Frame BackgroundColor="White" CornerRadius="10" Padding="15">
+                    <VerticalStackLayout Spacing="5">
+                        <Label 
+                            Text="EMAIL" 
+                            FontSize="10" 
+                             
+                            FontAttributes="Bold" 
+                            TextColor="#AAADB2" 
+                            TextTransform="Uppercase"/>
+                        <Label 
+                            x:Name="emailLabel" 
+                            Text="ivanov@gmail.com" 
+                            FontSize="15" 
+                             
+                            TextColor="#201F1F"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Phone Number -->
+                <Frame BackgroundColor="White" CornerRadius="10" Padding="15">
+                    <VerticalStackLayout Spacing="5">
+                        <Label 
+                            Text="НОМЕР ТЕЛЕФОНА" 
+                            FontSize="10" 
+                             
+                            FontAttributes="Bold" 
+                            TextColor="#AAADB2" 
+                            TextTransform="Uppercase"/>
+                        <Label 
+                            x:Name="phoneNumberLabel" 
+                            Text="+77087477777" 
+                            FontSize="15" 
+                            TextColor="#201F1F"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame BackgroundColor="White" CornerRadius="10" Padding="15" x:Name="groupFrame">
+                    <VerticalStackLayout Spacing="5">
+                        <Label 
+              Text="ГРУППА" 
+              FontSize="10" 
+               
+              FontAttributes="Bold" 
+              TextColor="#AAADB2" 
+              TextTransform="Uppercase"/>
+                        <Label 
+              x:Name="groupLabel" 
+                Text="{Binding RoleSpecificText}" 
+              FontSize="15" 
+               
+              TextColor="#201F1F"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Edit and Logout Buttons -->
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="15">
+                    <Button 
+                        Text="Редактировать" 
+                        BackgroundColor="#007AFF" 
+                        TextColor="White" 
+                        FontSize="15" 
+                        CornerRadius="18" 
+                        HeightRequest="50" 
+                        WidthRequest="340"
+                        Margin="15,0"
+                        Clicked="OnEditProfileClicked"/>
+                    <Button 
+    Text="Выйти" 
+    BackgroundColor="gray" 
+    TextColor="White" 
+    FontSize="15" 
+    CornerRadius="18" 
+    HeightRequest="50" 
+    WidthRequest="340"
+    Margin="15,0"
+    x:Name="logoutbtn"
+    Clicked="OnLogOutClicked"/>
                 </VerticalStackLayout>
-
-                <!-- Кнопки -->
-                <Grid ColumnDefinitions="*,*" Margin="0,20,0,0">
-                    <!-- Кнопка редактирования -->
-                    <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center">
-                        <ImageButton
-                            Source="editbtn.png"
-                            Clicked="OnEditProfileClicked"
-                            HeightRequest="40"
-                            WidthRequest="100"
-                            HorizontalOptions="Center"/>
-                        <Label
-                            Text="Редактировать"
-                            HorizontalOptions="Center"
-                            TextColor="#beafcb"
-                            FontSize="10"
-                            Padding="5"/>
-                    </VerticalStackLayout>
-
-                    <!-- Кнопка выхода -->
-                    <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center">
-                        <ImageButton 
-                            Source="logoutbtn.png"
-                            Clicked="OnLogOutClicked"
-                            HeightRequest="40"
-                            WidthRequest="100"
-                            HorizontalOptions="Center"/>
-                        <Label
-                            Text="Выйти из аккаунта"
-                            TextColor="#beafcb"
-                            FontSize="10"
-                            Padding="5"
-                            HorizontalOptions="Center"/>
-                    </VerticalStackLayout>
-                </Grid>
-            </StackLayout>
+            </VerticalStackLayout>
         </ScrollView>
-        <StackLayout Grid.Row="3" Grid.RowSpan="2" Padding="40" VerticalOptions="FillAndExpand" HorizontalOptions="Center" Spacing="20">
-            <ActivityIndicator x:Name="loadingIndicator" IsRunning="False" IsVisible="False" Color="White" />
-            <Label x:Name="loadingLabel" Text="Загрузка уроков..." IsVisible="False" TextColor="White" FontSize="18" HorizontalOptions="Center"/>
-        </StackLayout>
-        <!-- Нижняя часть страницы -->
-        <Grid Grid.Row="3">
-            <Image
-                Source="lll.png"
-                WidthRequest="430"
-                VerticalOptions="EndAndExpand"/>
-        </Grid>
-        <Grid Grid.Row="4">
-            <HorizontalStackLayout Padding="10" Spacing="70" HorizontalOptions="CenterAndExpand">
-                <ImageButton Source="desktop_icon.png" HeightRequest="50" WidthRequest="50" Clicked="OnDesktopClicked"/>
-                <ImageButton Source="statistics_icon.png" HeightRequest="60" WidthRequest="60" Clicked="OnStatisticsClicked"/>
-                <ImageButton Source="profile_icon.png" HeightRequest="50" WidthRequest="50" Clicked="OnProfileClicked"/>
+
+        <!-- Footer Navigation -->
+        <Grid Grid.Row="2" HeightRequest="80" BackgroundColor="White" VerticalOptions="End" Padding="10">
+            <HorizontalStackLayout Padding="10" Spacing="55" HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+                <ImageButton Source="desktop_icon.png" HeightRequest="35.29" WidthRequest="62" Clicked="OnDesktopClicked"/>
+                <ImageButton Source="statistics_icon.png" HeightRequest="35.29" WidthRequest="62" Clicked="OnStatisticsClicked"/>
+                <ImageButton Source="profile.png" HeightRequest="35.29" WidthRequest="62" Clicked="OnProfileClicked"/>
             </HorizontalStackLayout>
         </Grid>
     </Grid>

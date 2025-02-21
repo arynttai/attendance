@@ -10,7 +10,7 @@
             Text="Welcome to Attendance Control!"
             FontSize="13"
             TextColor="Black"
-            FontFamily="Inter"
+            
             FontAttributes="Bold"
             VerticalOptions="Center"
             HorizontalOptions="Center"/>
@@ -24,7 +24,7 @@
         <Label 
             Text="Login to Continue"
             FontSize="10"
-            FontFamily="Inter"
+            
             FontAttributes="Bold"
             TextColor="#828282"
             HorizontalOptions="Center"/>
@@ -81,64 +81,17 @@
                         Released="OnPasswordButtonReleased"/>
                 </HorizontalStackLayout>
             </Frame>
-
-            <!-- Выбор роли -->
-            <Label 
-                Text="Выберите роль"
-                FontSize="10"
-                FontFamily="Inter"
-                FontAttributes="Bold"
-                TextColor="#828282"
-                HorizontalOptions="Center"
-                Margin="0,8,0,5"/>
-
-            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
-                <!-- Кнопка Учитель -->
-                <Button 
-                    x:Name="teacherButton"
-                    Text="Учитель"
-                    BackgroundColor="White"
-                    BorderColor="#7CB1FF"
-                    BorderWidth="1"
-                    CornerRadius="16"
-                    FontFamily="Inter"
-                    FontSize="10"
-                    TextColor="#828282"
-                    Clicked="OnTeacherSelected"
-                    WidthRequest="150"
-                    HeightRequest="40"
-                    HorizontalOptions="CenterAndExpand"
-                    VerticalOptions="CenterAndExpand"/>
-
-                <!-- Кнопка Студент -->
-                <Button 
-                    x:Name="studentButton"
-                    Text="Студент"
-                    BackgroundColor="White"
-                    BorderColor="#7CB1FF"
-                    BorderWidth="1"
-                    CornerRadius="16"
-                    FontFamily="Inter"
-                    FontSize="10"
-                    TextColor="#828282"
-                    Clicked="OnStudentSelected"
-                    WidthRequest="150"
-                    HeightRequest="40"
-                    HorizontalOptions="CenterAndExpand"
-                    VerticalOptions="CenterAndExpand"/>
-            </HorizontalStackLayout>
-
             <!-- Текстовое сообщение про WiFi -->
             <Label 
                 FontSize="9"
-                FontFamily="Inter"
+                
                 FontAttributes="Bold"
                 TextColor="#828282"
                 HorizontalOptions="Start"
                 Margin="15,5">
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span Text="Пожалуйста, подключитесь к WIFI (Study, WiFi-Guest, Office)" FontAttributes="Bold, Italic" />
+                        <Span Text="Пожалуйста, подключитесь к WIFI (Study, Office)" FontAttributes="Bold, Italic" />
                     </FormattedString>
                 </Label.FormattedText>
             </Label>

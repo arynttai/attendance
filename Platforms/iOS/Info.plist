@@ -9,9 +9,11 @@
 		<integer>1</integer>
 		<integer>2</integer>
 	</array>
+	<key>CFBundleIdentifier</key>
+	<string>com.madiyar.attendance</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
-		<string>arm64</string>
+		<string>iossimulator-arm64</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>

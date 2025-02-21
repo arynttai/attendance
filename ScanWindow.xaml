@@ -3,45 +3,48 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.Maui"
              x:Class="AC.ScanWindow"
-             BackgroundColor="#23034a"
+             BackgroundColor="White"
              NavigationPage.HasBackButton="false">
-
-    <StackLayout Spacing="30" Padding="40" VerticalOptions="FillAndExpand">
-        <Grid ColumnDefinitions="Auto,*">
+    <!-- Основной контент -->
+    <StackLayout Spacing="10" Padding="20" VerticalOptions="FillAndExpand">
+        <Grid ColumnDefinitions="Auto,*" HeightRequest="50">
             <ImageButton
-                Source="backbtnwhite.png"
-            Clicked="GoBack"
-            Margin="-25,0,0,0"
-            Padding="10" 
-            WidthRequest="70"
-            HeightRequest="70"
-            VerticalOptions="Center"
-            HorizontalOptions="Center"
-            Aspect="AspectFit" />
-                <Label
+                Source="back.png"
+                Clicked="GoBack"
+                Margin="0,0,0,0"
+                WidthRequest="25"
+                HeightRequest="25"
+                HorizontalOptions="Start"
+                VerticalOptions="Center"/>
+            <Label
                 Grid.Column="1"
-                Text="Сканировать QR-код аудитории"
+                Text="Сканировать QR-код"
                 FontSize="17"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
-                TextColor="White"
+                
+                FontAttributes="Bold"
+                TextColor="#3b3939"
                 HorizontalTextAlignment="Center"/>
         </Grid>
+
         <zxing:CameraBarcodeReaderView
-            x:Name="barcodeReader"
-            BarcodesDetected="barcodeReader_BarcodesDetected"
-            HeightRequest="200"
-            WidthRequest="350"
-            HorizontalOptions="FillAndExpand"
-            VerticalOptions="FillAndExpand"/>
-        <Button
-            Text="Наведи камеру на Qrcode"
-            TextColor="White"
-            BackgroundColor="#6200EE"
-            Clicked="OnCaptureButtonClicked"
-            HeightRequest="60"
-            HorizontalOptions="FillAndExpand"/>
+                    x:Name="barcodeReader"
+                    BarcodesDetected="barcodeReader_BarcodesDetected"
+                    HeightRequest="200"
+                    WidthRequest="350"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"/>
         
+        <Button
+            BackgroundColor="#3172FF"
+            Text="Продолжить"
+            FontSize="13"
+            
+            FontAttributes="Bold"
+            CornerRadius="18"
+            HeightRequest="55"
+            Clicked="OnCaptureButtonClicked"
+            Margin="0,30"/>
     </StackLayout>
-    
 </ContentPage>

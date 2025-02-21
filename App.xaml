@@ -6,22 +6,22 @@
     <Application.Resources>
         
         <Style TargetType="Label">
-            <Setter Property="FontFamily" Value="Gilroy" />
+            
             <Setter Property="TextColor" Value="White" />
         </Style>
         <Style TargetType="ContentPage">
             <Setter Property="BackgroundColor" Value="#23034a"/>
         </Style>
         <Style TargetType="Button">
-            <Setter Property="FontFamily" Value="Gilroy"/>
+            
             <Setter Property="TextColor" Value="White" />
         </Style>
         <Style TargetType="Entry">
-            <Setter Property="FontFamily" Value="Gilroy"/>
+            
             <Setter Property="TextColor" Value="White" />
         </Style>
         <Style TargetType="Editor">
-            <Setter Property="FontFamily" Value="Gilroy"/>
+            
             <Setter Property="TextColor" Value="White" />
         </Style>
         <ResourceDictionary>

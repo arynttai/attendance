@@ -1,63 +1,56 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AC.StartQ4"
-             BackgroundColor="#23034a"
-             NavigationPage.HasBackButton="false">
-    <Grid RowDefinitions="Auto,Auto,*,Auto" Padding="10">
-        <!-- Back button and title -->
-        <Grid ColumnDefinitions="Auto,*" Padding="5" Grid.Row="0">
-            <ImageButton
-                Source="backbtnwhite.png"
-                Clicked="GoBack"
-                WidthRequest="25"
-                HeightRequest="25"
-                HorizontalOptions="Start"
-                VerticalOptions="Center"/>
-            <Label
-                Grid.Column="1"
-                Text="4/4"
-                FontSize="17"
-                HorizontalOptions="End"
-                VerticalOptions="Center"
-                TextColor="White"/>
-        </Grid>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="AC.StartQ4"
+    BackgroundColor="White"
+    NavigationPage.HasBackButton="false">
 
-        <!-- Line -->
+    <Grid Padding="20" RowDefinitions="Auto,*,Auto">
+
+        <!-- Лого -->
         <Image
-             Grid.Row="1"
-             Source="line34.png"
-             WidthRequest="380"
-             HeightRequest="55"
-             Margin="0,0,0,0"/>
+            Source="aitu_logo.png"
+            WidthRequest="180"
+            HeightRequest="130"
+            HorizontalOptions="Center"
+            VerticalOptions="Start"
+            Grid.Row="0"/>
 
-        <!-- Content area -->
-        <VerticalStackLayout Grid.Row="2" Spacing="20" VerticalOptions="CenterAndExpand">
-            <!-- Circle image -->
+        <!-- Центральный контент -->
+        <StackLayout Grid.Row="1" VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
+            <!-- Текст успеха -->
+            <Label 
+                Text="Authentication Completed Successfully!"
+                FontSize="14"
+                
+                FontAttributes="Bold"
+                TextColor="#828282"
+                Margin="0,-50,0,0"
+                HorizontalOptions="Center"
+                HorizontalTextAlignment="Center"/>
+
+            <!-- Иконка успеха -->
             <Image
                 Source="check_circle.png"
-                WidthRequest="200"
+                WidthRequest="40"
+                HeightRequest="40"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"/>
+        </StackLayout>
 
-            <!-- Text -->
-            <Label 
-                Text="Аутентификация успешно завершена!"
-                VerticalOptions="Center" 
-                HorizontalOptions="Center" 
-                HorizontalTextAlignment="Center"
-                FontSize="15"
-                FontAttributes="Bold"
-                TextColor="White"/>
-        </VerticalStackLayout>
-
-        <!-- Button -->
-        <ImageButton 
-            Grid.Row="3"
-            Source="startbig.png"
-            WidthRequest="340"
+        <!-- Кнопка -->
+        <Button 
+            Text="Start"
             Clicked="OnStartClicked"
+            WidthRequest="320"
+            HeightRequest="42"
+            BackgroundColor="#007AFF"
+            CornerRadius="16"
+            FontSize="11"
             HorizontalOptions="Center"
-            VerticalOptions="End"/>
+            VerticalOptions="End"
+            Grid.Row="2"
+            Margin="0,0,0,20"/>
     </Grid>
 </ContentPage>

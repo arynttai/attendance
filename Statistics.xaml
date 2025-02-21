@@ -1,92 +1,99 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AC.Statistics"
-             BackgroundColor="#23034a"
-             NavigationPage.HasBackButton="false">
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:microcharts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
+    x:Class="AC.Statistics"
+    BackgroundColor="#F6F6F5"
+    NavigationPage.HasBackButton="false">
 
-    <StackLayout Padding="0" Margin="0">
-        <!-- Верхняя часть страницы с фоном -->
-        <Grid>
-            <Image
-                Source="bg6.jpg"
-                Aspect="AspectFill"
-                HeightRequest="70"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="FillAndExpand"/>
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Header -->
+        <Grid BackgroundColor="White" HeightRequest="50" Grid.Row="0">
             <Label
-                Text="Attendance Control" 
-                FontSize="20"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                TextColor="White"/>
+                Text="Статистика" 
+                FontSize="20" 
+                 
+                FontAttributes="Bold" 
+                HorizontalOptions="Center" 
+                VerticalOptions="Center" 
+                TextColor="#201F1F"/>
         </Grid>
 
-        <!-- Линия -->
-        <Image
-            Source="line.png"
-            WidthRequest="400"
-            HeightRequest="65"
-            Margin="0,-32,0,0"/>
+        <!-- Main Content -->
+        <ScrollView Grid.Row="1" Padding="20">
+            <VerticalStackLayout Spacing="20">
 
-        <!-- Основной контент -->
-        <ScrollView>
-            <StackLayout Spacing="20" Padding="40" VerticalOptions="StartAndExpand">
-                <Label
-                    Text="Статистика" 
-                    FontSize="30"
-                    FontFamily="Gilroy"
-                    FontAttributes="Bold"
-                    HorizontalOptions="CenterAndExpand"/>
+                <!-- Date Range Selection -->
+                <Frame BackgroundColor="White" CornerRadius="15" Padding="20" HasShadow="True">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Выберите диапазон дат" FontSize="16" TextColor="#201F1F" HorizontalOptions="Center"/>
 
-                <!-- Section for student statistics -->
-                <StackLayout x:Name="StudentStatisticsLayout" IsVisible="{Binding IsStudent}">
-                    <Label
-                        Text="Успеваемость студента"
-                        FontSize="20"
-                        FontAttributes="Bold"
-                        HorizontalOptions="CenterAndExpand"/>
-                    <CollectionView x:Name="StudentStatisticsCollectionView">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Padding="10" Margin="5" BackgroundColor="White" ColumnSpacing="10">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Text="{Binding TeacherName}" TextColor="Black" />
-                                    <Label Grid.Column="1" Text="{Binding AttendedClasses}" TextColor="Black" />
-                                    <Label Grid.Column="2" Text="{Binding LateClasses}" TextColor="Black" />
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </StackLayout>
+                        <!-- Date Pickers with styled borders -->
+                        <HorizontalStackLayout Spacing="25" HorizontalOptions="Center">
+                            <Frame BackgroundColor="#F0F0F0" CornerRadius="8" Padding="5" HasShadow="True">
+                                <DatePicker x:Name="fromDatePicker" TextColor="Black" />
+                            </Frame>
 
-                <!-- Section for teacher statistics -->
-                <StackLayout x:Name="TeacherStatisticsLayout" IsVisible="{Binding IsTeacher}">
-                    <Label
-                        Text="Статистика преподавателя"
-                        FontSize="20"
-                        FontAttributes="Bold"
-                        HorizontalOptions="CenterAndExpand"/>
-                    <Label x:Name="CreatedLessonsLabel" Text="Уроки: " FontSize="16" TextColor="White"/>
-                    <Label x:Name="StudentsInLessonsLabel" Text="Студенты: " FontSize="16" TextColor="White"/>
-                </StackLayout>
-            </StackLayout>
+                            <Frame BackgroundColor="#F0F0F0" CornerRadius="8" Padding="5" HasShadow="True">
+                                <DatePicker x:Name="toDatePicker" TextColor="Black" />
+                            </Frame>
+
+                        </HorizontalStackLayout>
+
+                        <!-- Apply Button with rounded corners -->
+                        <Button Text="Применить" BackgroundColor="#007AFF" TextColor="White"
+                                Clicked="OnApplyDateRangeClicked" 
+                                FontSize="15" 
+                                CornerRadius="16" 
+                                HeightRequest="50" 
+                                WidthRequest="275" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Performance Chart (Pie) -->
+                <Frame x:Name="ChartFrame" BackgroundColor="White" CornerRadius="10" Padding="15">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Диаграмма активности" FontSize="17" FontAttributes="Bold" TextColor="#201F1F" HorizontalOptions="Center"/>
+                        <Grid HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                            <microcharts:ChartView x:Name="performanceChart" HeightRequest="300" WidthRequest="300" HorizontalOptions="Center" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Lessons List -->
+                <Frame BackgroundColor="White" CornerRadius="10" Padding="15">
+                    <VerticalStackLayout Spacing="10" Padding="5">
+                        <Label Text="Прошедшие уроки" FontSize="17" FontAttributes="Bold" TextColor="#201F1F"/>
+                        <CollectionView x:Name="lessonsCollectionView">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout Spacing="5">
+                                        <Grid ColumnDefinitions="*,Auto" Padding="5">
+                                            <StackLayout Grid.Column="0" Spacing="5">
+                                                <Label Text="{Binding TeacherName}" FontAttributes="Bold" FontSize="14" TextColor="#201F1F"/>
+                                                <Label Text="{Binding LessonTime}" FontSize="12" TextColor="#201F1F"/>
+                                            </StackLayout>
+                                            <BoxView Grid.Column="1" WidthRequest="10" HeightRequest="10" CornerRadius="5" BackgroundColor="{Binding AttendanceColor}" VerticalOptions="Center"/>
+                                        </Grid>
+                                        <BoxView HeightRequest="1" BackgroundColor="#E5E6E8"/>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Frame>
+
+            </VerticalStackLayout>
         </ScrollView>
 
-        <!-- Нижняя часть страницы -->
-        <Image
-            Source="lll.png"
-            WidthRequest="430"
-            VerticalOptions="EndAndExpand"
-            Margin="0,0,0,0"/>
-        <HorizontalStackLayout Padding="10" Spacing="70" HorizontalOptions="CenterAndExpand">
-            <ImageButton Source="desktop_icon.png" HeightRequest="50" WidthRequest="50"  Clicked="OnDesktopClicked"/>
-            <ImageButton Source="statistics_icon.png" HeightRequest="60" WidthRequest="60" Clicked="OnStatisticsClicked" />
-            <ImageButton Source="profile_icon.png" HeightRequest="50" WidthRequest="50" Clicked="OnProfileClicked" />
-        </HorizontalStackLayout>
-    </StackLayout>
+        <!-- Footer Navigation -->
+        <Grid Grid.Row="2" HeightRequest="80" BackgroundColor="White" VerticalOptions="End" Padding="10">
+            <HorizontalStackLayout Spacing="55" HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+                <ImageButton Source="desktop_icon.png" HeightRequest="35" WidthRequest="62" Clicked="OnDesktopClicked"/>
+                <ImageButton Source="statistics.png" HeightRequest="35" WidthRequest="62"/>
+                <ImageButton Source="profile_icon.png" HeightRequest="35" WidthRequest="62" Clicked="OnProfileClicked"/>
+            </HorizontalStackLayout>
+        </Grid>
+    </Grid>
 </ContentPage>

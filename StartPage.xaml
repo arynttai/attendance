@@ -12,8 +12,8 @@
             Padding="4"
             Text="Attendance control"
             TextColor="White"
-            FontSize="26"
-            FontFamily="Inter"
+            FontSize="22"
+            
             FontAttributes="Bold"
             HorizontalTextAlignment="Center" 
             Margin="0, 0,0,0"/>
@@ -22,8 +22,8 @@
             Padding="5"
             Text="Лёгкий и удобный способ контролировать посещаемость и учебный процесс"
             TextColor="White"
-            FontSize="12"
-            FontFamily="Inter"
+            FontSize="10"
+            
             HorizontalTextAlignment="Center"/>
     </StackLayout>
 </ContentPage>

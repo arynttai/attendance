@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Logging;
 using ZXing.Net.Maui;
 using ZXing.Net.Maui.Controls;
+using SkiaSharp.Views.Maui.Controls.Hosting;
+using Microcharts.Maui;
 
 namespace AC
 {
@@ -13,14 +15,13 @@ namespace AC
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkitMediaElement()
+                
                 .ConfigureFonts(fonts =>
                 {
-                    fonts.AddFont("gilroy-medium.ttf", "Gilroy");
-                    fonts.AddFont("gilroy-regular.ttf", "GilroyThin");
-
+                    fonts.AddFont("inter.ttf", "Inter");
                 })
-                .UseBarcodeReader();
-
+                .UseBarcodeReader()
+                .UseSkiaSharp();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

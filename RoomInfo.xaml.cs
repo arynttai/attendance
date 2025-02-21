@@ -6,269 +6,216 @@ using System.Collections.Generic;
 using Dapper;
 using Microsoft.Maui.Controls;
 using Npgsql;
-using ZXing; // Библиотека ZXing для генерации QR-кодов
-using ZXing.Common;
-using System.IO;
-using AC.AC.AC;
-using AC.AC;
-using System.Drawing;
-using QRCoder;
-using QRCodeGenerator = QRCoder.QRCodeGenerator;
 using ZXing;
 using ZXing.Common;
+using System.IO;
+using AC.AC;
+using QRCoder;
+using QRCodeGenerator = QRCoder.QRCodeGenerator;
+
 namespace AC
 {
-	public partial class RoomInfo : ContentPage
-	{
-		private readonly string _role;
-		private readonly string _uin;
-		private readonly string _group;
-		private readonly LessonService _lessonService;
-		private readonly string _token;
+    public class RoomInfoViewModel
+    {
+        public string RoomNumber { get; set; }
+    }
 
-		public RoomInfo(string role, string uin, string token)
-		{
-			InitializeComponent();
-			_role = role;
-			_uin = Preferences.Get("UserUIN", uin);
-			_group = null;
-			_token = token;
+    public partial class RoomInfo : ContentPage
+    {
+        private CancellationTokenSource _cts;
+        private readonly string _role;
+        private readonly string _uin;
+        private readonly Lesson _lesson;
+        private readonly string _token;
+        private readonly LessonService _lessonService;
+        private RoomInfoViewModel _viewModel;
+        private readonly string _roomid;
+        private const string connectionString = "Host=10.250.0.64;Port=5432;Username=postgres;Password=postgres;Database=attendance;";
+        public RoomInfo(string role, string uin, string roomid, string token)
+        {
+            InitializeComponent();
+            _role = role;
+            _uin = Preferences.Get("UserUIN", uin);
+            _roomid = roomid;
+            _token = Preferences.Get("auth_token", token);
 
-			_lessonService = new LessonService();
-		}
+            BindingContext = new RoomInfoViewModel
+            {
+                RoomNumber = roomid
+            };
 
-		public RoomInfo(string role, string uin, string group, string token)
-		{
-			InitializeComponent();
-			_role = role;
-			_uin = Preferences.Get("UserUIN", uin);
-			_group = group;
-			_token = token;
+            NavigationPage.SetHasNavigationBar(this, false);
+            _lessonService = new LessonService();
+        }
 
-			_lessonService = new LessonService();
-		}
 
-		protected override async void OnAppearing()
-		{
-			base.OnAppearing();
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            _cts = new CancellationTokenSource();
+            loadingIndicator.IsRunning = true;
+            loadingIndicator.IsVisible = true;
+            loadingLabel.IsVisible = true;
+            lessonsListView.IsVisible = false;
+            await LoadLessonsAsync(_cts.Token);
+            loadingIndicator.IsRunning = false;
+            loadingIndicator.IsVisible = false;
+            loadingLabel.IsVisible = false;
+            lessonsListView.IsVisible = true;
+            
+        }
 
-			loadingIndicator.IsRunning = true;
-			loadingIndicator.IsVisible = true;
-			loadingLabel.IsVisible = true;
-			lessonsListView.IsVisible = false;
+        private async Task LoadLessonsAsync(CancellationToken token)
+        {
+            try
+            {
+                const string query = @"
+SELECT 
+            l.lessonid,
+            l.pincode,
+            l.teacher,
+            l.starttime,
+            l.endtime,
+            l.room,
+            l.group,
+            s.subject_name AS Description -- Получаем название предмета
+        FROM lessons l
+        JOIN subjects_teachers st ON st.teacher_id = (
+            SELECT id FROM users WHERE uin = @Uin AND role = 'teacher'
+        )
+        JOIN subjects s ON st.subject_id = s.subject_id
+        WHERE l.room = @Room
+          AND l.starttime <= NOW() + INTERVAL '5 hours' + INTERVAL '15 minutes'
+          AND l.endtime >= NOW() + INTERVAL '5 hours'";
 
-			await LoadLessonsAsync();
+                using var connection = new NpgsqlConnection(connectionString);
+                await connection.OpenAsync(token); // Передаём токен для отмены
 
-			loadingIndicator.IsRunning = false;
-			loadingIndicator.IsVisible = false;
-			loadingLabel.IsVisible = false;
-			lessonsListView.IsVisible = true;
-		}
+                // Передаём параметры в запрос
+                var lessons = (await connection.QueryAsync<Lesson>(
+                    query,
+                    new { Uin = _uin, Room = _roomid }
+                )).ToList();
 
-		private async Task LoadLessonsAsync()
-		{
-			try
-			{
-				var lessons = await _lessonService.GetLessonsAsync();
+                // Проверяем токен: если операция была отменена, выбрасывается исключение
+                token.ThrowIfCancellationRequested();
 
-				if (lessons == null || !lessons.Any())
-				{
-					Debug.WriteLine("[INFO] No lessons found.");
-					return;
-				}
+                if (!lessons.Any())
+                {
+                    Debug.WriteLine("[INFO] No current lessons found.");
+                    DisplayNoLessonsMessage();
+                    return;
+                }
 
-				// Фильтрация уроков в зависимости от роли
-				var filteredLessons = (_role == "teacher")
-					? lessons.Where(lesson => lesson.TeacherUIN == _uin && DateTime.Now <= lesson.EndTime.AddHours(12)).ToList()
-					: lessons.Where(lesson => lesson.Group == _group && DateTime.Now <= lesson.EndTime.AddHours(12)).ToList();
+                Debug.WriteLine($"[INFO] Found {lessons.Count} ongoing lessons.");
 
-				if (!filteredLessons.Any())
-				{
-					Debug.WriteLine("[INFO] No filtered lessons found.");
-					return;
-				}
+                // Обновляем UI только если не отменено
+                if (!token.IsCancellationRequested)
+                {
+                    lessonsListView.ItemsSource = lessons;
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.WriteLine("[INFO] LoadLessonsAsync was canceled.");
+                // Здесь можно ничего не делать — операция прервана
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ERROR] Failed to load lessons: {ex.Message}");
 
-				// Получение списка всех lessonId для массового запроса PinCode
-				var lessonIds = filteredLessons.Select(lesson => lesson.LessonId).ToList();
-				var pinCodes = await GetPinCodesForLessonsAsync(lessonIds);
+                // Отображаем ошибку только если не отменено
+                if (!token.IsCancellationRequested)
+                {
+                    await DisplayAlert("Ошибка", "Не удалось загрузить уроки.", "OK");
+                }
+            }
+            finally
+            {
+                // Убираем индикаторы загрузки только если не отменено
+                if (!token.IsCancellationRequested)
+                {
+                    loadingIndicator.IsRunning = false;
+                    loadingIndicator.IsVisible = false;
+                    loadingLabel.IsVisible = false;
+                    lessonsListView.IsVisible = true;
+                }
+            }
+        }
 
-				foreach (var lesson in filteredLessons)
-				{
-					// Присвоение PinCode, если он найден
-					if (pinCodes.TryGetValue(lesson.LessonId, out var pinCode))
-					{
-						lesson.PinCode = pinCode;
-					}
-					else
-					{
-						// Генерация PIN-кода, если он не найден в базе данных
-						lesson.PinCode = _lessonService.GeneratePinCode();
-						// При необходимости, сохраните сгенерированный PIN-код обратно в базу данных или JSON
-						// Это зависит от вашей логики данных
-					}
 
-					// Генерация содержимого QR-кода на основе данных урока
-					string qrCodeContent = GenerateQRData(lesson); // Используем метод GenerateQRData
-					lesson.QRCodeImage = GenerateQRCodeImage(qrCodeContent);
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
 
-					// Форматирование времени для отображения
-					lesson.StartTimeFormatted = lesson.StartTime.ToString("HH:mm");
-					lesson.EndTimeFormatted = lesson.EndTime.ToString("HH:mm");
+            if (_cts != null)
+            {
+                _cts.Cancel(); // Отменяем все операции
+                _cts.Dispose(); // Освобождаем ресурсы
+                _cts = null; // Обнуляем ссылку
+            }
+        }
 
-					Debug.WriteLine($"[INFO] Lesson ID: {lesson.LessonId}, PinCode: {lesson.PinCode}");
-				}
+        private async void OnLessonTapped(object sender, ItemTappedEventArgs e)
+        {
+            if (e.Item is Lesson tappedLesson)
+            {
+                // Navigate to a new page with lesson details
+                await Navigation.PushAsync(new LessonInfo(_role, _uin, _token, tappedLesson));
+            }
 
-				// Установка обновленного списка уроков в ListView
-				lessonsListView.ItemsSource = filteredLessons;
-			}
-			catch (Exception ex)
-			{
-				Debug.WriteLine($"[ERROR] Failed to load lessons: {ex.Message}");
-				await DisplayAlert("Ошибка", "Не удалось загрузить уроки.", "OK");
-			}
-		}
+    // Deselect the tapped item
+    ((ListView)sender).SelectedItem = null;
+        }
 
-		private string GenerateQRData(Lesson lesson)
-		{
-			return $"LessonId: {lesson.LessonId}\n" +
-				   $"Teacher: {lesson.Teacher}\n" +
-				   $"Room: {lesson.Room}\n" +
-				   $"Group: {lesson.Group}\n" +
-				   $"StartTime: {lesson.StartTime:HH:mm}\n" +
-				   $"EndTime: {lesson.EndTime:HH:mm}\n" +
-				   $"Description: {lesson.Description}";
-		}
 
-		private ImageSource GenerateQRCodeImage(string qrContent)
-		{
-			var writer = new BarcodeWriterPixelData
-			{
-				Format = BarcodeFormat.QR_CODE,
-				Options = new EncodingOptions
-				{
-					Height = 200,
-					Width = 200,
-					Margin = 1
-				}
-			};
-			var pixelData = writer.Write(qrContent);
+        private void DisplayNoLessonsMessage()
+        {
+            LessonsStackLayout.Children.Clear();
 
-			// Создание изображения из пиксельных данных
-			using (var stream = new MemoryStream())
-			{
-				using (var bitmap = new System.Drawing.Bitmap(pixelData.Width, pixelData.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb))
-				{
-					var bitmapData = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, pixelData.Width, pixelData.Height),
-						System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
-					try
-					{
-						// Копирование пиксельных данных в изображение
-						System.Runtime.InteropServices.Marshal.Copy(pixelData.Pixels, 0, bitmapData.Scan0, pixelData.Pixels.Length);
-					}
-					finally
-					{
-						bitmap.UnlockBits(bitmapData);
-					}
-					bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
-				}
-				return ImageSource.FromStream(() => new MemoryStream(stream.ToArray()));
-			}
-		}
+            if (_role == "teacher")
+            {
+                LessonsStackLayout.Children.Add(new Label
+                {
+                    Text = "В данной аудитории пока нет созданных уроков. Вы можете создать новый.",
+                    FontSize = 15,
+                    TextColor = Color.FromArgb("#AAADB2"),
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
+                    HorizontalTextAlignment = TextAlignment.Center
+                });
 
-		private async Task<Dictionary<string, string>> GetPinCodesForLessonsAsync(List<string> lessonIds)
-		{
-			try
-			{
-				const string connectionString = "Host=dpg-csogsqggph6c73braemg-a.oregon-postgres.render.com;Port=5432;Username=delechka;Password=ZSQ5jHTFX2kfJy35JkfxobQ0qYh6ymGG;Database=attendance_9s8z;SslMode=Require;Trust Server Certificate=true";
+                NewLessonButton.IsVisible = true;
+            }
+            else if (_role == "student")
+            {
+                LessonsStackLayout.Children.Add(new Label
+                {
+                    Text = "В данной аудитории пока нет доступных уроков.",
+                    FontSize = 15,
+                    TextColor = Color.FromArgb("#AAADB2"),
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
+                    HorizontalTextAlignment = TextAlignment.Center
+                });
 
-				using (var connection = new NpgsqlConnection(connectionString))
-				{
-					await connection.OpenAsync();
+                NewLessonButton.IsVisible = false;
+            }
+        }
 
-					// Формирование запроса для получения PinCode для всех уроков одновременно
-					string query = @"SELECT lessonid, pincode FROM lessons WHERE lessonid = ANY(@LessonIds)";
-					var result = await connection.QueryAsync<(string LessonId, string PinCode)>(query, new { LessonIds = lessonIds });
+        private async void OnNewLessonButtonClicked(object sender, EventArgs e)
+        {
+            if (_role == "teacher")
+            {
+                await Navigation.PushAsync(new NewLesson(_role, _uin, _token, _roomid));
+            }
+        }
 
-					// Преобразование результата в словарь
-					return result.ToDictionary(r => r.LessonId, r => r.PinCode);
-				}
-			}
-			catch (Exception ex)
-			{
-				Debug.WriteLine($"[ERROR] Failed to get PinCodes for lessons: {ex.Message}");
-				return new Dictionary<string, string>();
-			}
-		}
 
-		// Метод для получения PinCode отдельного урока (не используется при массовом запросе)
-		private async Task<string> GetPinCodeForLessonAsync(string lessonId)
-		{
-			try
-			{
-				const string connectionString = "Host=dpg-csogsqggph6c73braemg-a.oregon-postgres.render.com;Port=5432;Username=delechka;Password=ZSQ5jHTFX2kfJy35JkfxobQ0qYh6ymGG;Database=attendance_9s8z;SslMode=Require;Trust Server Certificate=true";
+        private async void GoBack(object sender, EventArgs e)
+        {
+            await Navigation.PopAsync();
+        }
 
-				using (var connection = new NpgsqlConnection(connectionString))
-				{
-					await connection.OpenAsync();
-					string query = @"SELECT pincode FROM lessons WHERE lessonid = @LessonId";
-					return await connection.QueryFirstOrDefaultAsync<string>(query, new { LessonId = lessonId });
-				}
-			}
-			catch (Exception ex)
-			{
-				Debug.WriteLine($"[ERROR] Failed to get PinCode for lesson {lessonId}: {ex.Message}");
-				return null;
-			}
-		}
-
-		private async void OnLessonTapped(object sender, ItemTappedEventArgs e)
-		{
-			if (e.Item is Lesson lesson)
-			{
-				Debug.WriteLine($"[INFO] Lesson tapped: {lesson.LessonId}");
-				Debug.WriteLine($"[INFO] Navigating with role: {_role}, uin: {_uin}, lessonId: {lesson.LessonId}");
-
-				try
-				{
-					await Navigation.PushAsync(new LessonInfo(_role, _uin, lesson.LessonId));
-					Debug.WriteLine("[INFO] Successfully navigated to LessonInfo.");
-				}
-				catch (Exception ex)
-				{
-					Debug.WriteLine($"[ERROR] Navigation to LessonInfo failed: {ex.Message}");
-					await DisplayAlert("Ошибка", "Не удалось открыть страницу урока.", "OK");
-				}
-			}
-
-			((ListView)sender).SelectedItem = null;
-		}
-
-		private async void OnNewLessonButtonClicked(object sender, EventArgs e)
-		{
-			if (_role == "teacher")
-			{
-				await Navigation.PushAsync(new NewLesson(_role, _uin, _token));
-			}
-		}
-
-		private async void GoBack(object sender, EventArgs e)
-		{
-			await Navigation.PopAsync();
-		}
-
-		private async void OnDesktopClicked(object sender, EventArgs e)
-		{
-			await Navigation.PushAsync(new Desktop(_role, _uin, _token));
-		}
-
-		private async void OnStatisticsClicked(object sender, EventArgs e)
-		{
-			await Navigation.PushAsync(new Statistics(_role, _uin, _token));
-		}
-
-		private async void OnProfileClicked(object sender, EventArgs e)
-		{
-			await Navigation.PushAsync(new Profile(_role, _uin, _token));
-		}
-	}
+    }
 }

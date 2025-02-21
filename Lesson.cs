@@ -1,27 +1,41 @@
-﻿/*namespace AC
-{
-	public class Lesson
-	{
-		public string TeacherName => $"{LastName} {FirstName} {Patronymic}";
-		public string LastName { get; set; }
-		public string FirstName { get; set; }
-		public string Patronymic { get; set; }
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-		// Properties of the lesson
-		public string LessonId { get; set; }
-		public string Teacher { get; set; }
-		public DateTime StartTime { get; set; }
-		public DateTime EndTime { get; set; }
-		public string Room { get; set; }
-		public string Group { get; set; }
-		public string Description { get; set; }
-		public string QRCode { get; set; }
-		public string PinCode { get; set; }
-		public string TeacherUIN { get; set; }
-	}
+namespace AC
+{
+   
+[Table("lessons")]
+    public class Lesson
+    {
+        [Column("lessonid")]
+        public string LessonId { get; set; }
+
+        [Column("teacher")]
+        public string Teacher { get; set; }
+
+        [Column("teacheruin")]
+        public string TeacherUIN { get; set; }
+
+        [Column("starttime")]
+        public DateTime StartTime { get; set; }
+
+        [Column("endtime")]
+        public DateTime EndTime { get; set; }
+
+        [Column("room")]
+        public string Room { get; set; }
+
+        [Column("group")]
+        public string Group { get; set; }
+
+        [Column("description")]
+        public string Description { get; set; }
+
+        [Column("pincode")]
+        public string PinCode { get; set; }
+    }
+
 
 }
-*/
 public class FailedLoginAttempt
 {
 	public string UIN { get; set; }  // UIN пользователя

@@ -11,9 +11,10 @@ public class DatabaseService
 
 		public DatabaseService()
 		{
-			// Используем правильную строку подключения
-			_connectionString = "Host=dpg-csogsqggph6c73braemg-a.oregon-postgres.render.com;Port=5432;Username=delechka;Password=ZSQ5jHTFX2kfJy35JkfxobQ0qYh6ymGG;Database=attendance_9s8z;SslMode=Require;Trust Server Certificate=true";
-		}
+        // Используем правильную строку подключения
+
+        _connectionString = "Host=10.250.0.64;Port=5432;Username=postgres;Password=postgres;Database=attendance;";
+    }
 
 		public async Task<bool> ValidateStudentAsync(string uin, string password)
 		{

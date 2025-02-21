@@ -6,53 +6,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
+using AC;
 
 namespace AC
 {
 	using System;
 	using System.Text.Json.Serialization;
 	using Microsoft.Maui.Controls;
-
-	namespace AC
-	{
-		public class Lesson
-		{
-			// Конкатенированное имя преподавателя
-			public string TeacherName => $"{LastName} {FirstName} {Patronymic}";
-
-			public string LastName { get; set; }
-			public string FirstName { get; set; }
-			public string Patronymic { get; set; }
-			public string LessonId { get; set; }
-			public string Teacher { get; set; }
-
-			// Свойства для 24-часового формата времени
-			public DateTime StartTime { get; set; }
-			public DateTime EndTime { get; set; }
-			public string Room { get; set; }
-			public string Group { get; set; }
-			public string Description { get; set; }
-			public string QRCode { get; set; }
-
-			public string StartTimeFormatted { get; set; } // 24-часовой формат
-			public string EndTimeFormatted { get; set; }   // 24-часовой формат
-
-			// Обеспечивает корректную сериализацию/десериализацию PinCode
-			[JsonInclude]
-			public string PinCode { get; set; }
-
-			public string TeacherUIN { get; set; }
-
-			// Свойство для хранения изображения QR-кода
-			[JsonIgnore] // Не сериализуется, так как генерируется на лету
-			public ImageSource QRCodeImage { get; set; }
-		}
-
-
-
-
-
-
 		namespace AC
 		{
 			public class LessonService
@@ -67,7 +27,7 @@ namespace AC
 
 					_httpClient = new HttpClient
 					{
-						BaseAddress = new Uri("https://appapa-cugq.onrender.com/api/lesson") // Base URL for your API
+						BaseAddress = new Uri("http://10.250.0.64:8080/api/lesson") // Base URL for your API
 					};
 				}
 
@@ -131,15 +91,11 @@ namespace AC
 					{
 						LessonId = Guid.NewGuid().ToString(),
 						Teacher = teacher,
-						LastName = lastName,
-						FirstName = firstName,
-						Patronymic = patronymic,
 						StartTime = startTime,
 						EndTime = endTime,
 						Room = room,
 						Group = group,
 						Description = description,
-						QRCode = GenerateQRCode(teacher, room, group, startTime, endTime),
 						PinCode = GeneratePinCode(),
 						TeacherUIN = uin
 					};
@@ -161,7 +117,6 @@ namespace AC
 						StartTime = startTime.ToString("yyyy-MM-dd HH:mm"), // 24-часовой формат
 						EndTime = endTime.ToString("yyyy-MM-dd HH:mm")     // 24-часовой формат
 					};
-
 					return JsonSerializer.Serialize(qrData);
 				}
 
@@ -230,5 +185,5 @@ namespace AC
 
 		}
 	}
-}
+
 

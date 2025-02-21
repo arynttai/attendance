@@ -7,15 +7,11 @@
     Shell.FlyoutBehavior="Disabled"
     Title="AC">
 
-    <ShellContent Icon="desktop_icon.png" Route="Desktop">
+    <ShellContent Icon="desktop_icon.png" Route="desktop.png">
         <local:Desktop />
     </ShellContent>
 
-    <ShellContent Icon="statistics_icon.png" Route="Statistics">
-        <local:Statistics />
-    </ShellContent>
-
-    <Tab Title="Profile" Icon="profile.png">
+    <Tab Title="profile.png" Icon="profile.png">
         <ShellContent ContentTemplate="{DataTemplate local:Profile}" />
     </Tab>
     <Tab Title="Change Profile" Icon="changeprofile.png">

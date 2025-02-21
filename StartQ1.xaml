@@ -39,7 +39,7 @@
                 Margin="18,10,0,0"
                 Text="Для начала, кем вы являетесь?"
                 FontSize="15"
-                FontFamily="Gilroy"
+                
                 VerticalOptions="Center" 
                 />
             <Image
@@ -51,7 +51,7 @@
                 FontSize="12"
                 TextColor="#beafcb"
                 HorizontalTextAlignment="Start"
-                FontFamily="Gilroy"
+                
                 VerticalOptions="Center" 
                 />
             <Grid
@@ -86,7 +86,7 @@
                 Text="Студент"
                 FontSize="12"
                 TextColor="#beafcb"
-                FontFamily="Gilroy"
+                
                 VerticalOptions="Center"
                 HorizontalOptions="Center"/>
                 <Label
@@ -95,7 +95,7 @@
                 Text="Преподаватель"
                 FontSize="12"
                 TextColor="#beafcb"
-                FontFamily="Gilroy"
+                
                 VerticalOptions="Center"
                 HorizontalOptions="Center"/>
             </Grid>
@@ -112,7 +112,7 @@
                         Text="пожалуйста подключитесь к wifi (study , guest , office)"
                         FontSize="12"
                         TextColor="#beafcb"
-                        FontFamily="Gilroy"
+                        
                         VerticalOptions="Center"
                         HorizontalOptions="Center">
                   
