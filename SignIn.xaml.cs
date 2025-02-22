@@ -94,25 +94,25 @@ namespace AC
         {
             try
             {
-                // Вход через API 
+                // Р’С…РѕРґ С‡РµСЂРµР· API 
                 var loginResponse = await _userService.LoginAsync(uin, password);
 
                 if (loginResponse != null && loginResponse.Success)
                 {
                     ResetLoginAttempts();
 
-                    // Сохраняем данные авторизации
+                    // РЎРѕС…СЂР°РЅСЏРµРј РґР°РЅРЅС‹Рµ Р°РІС‚РѕСЂРёР·Р°С†РёРё
                     Preferences.Set("auth_token", loginResponse.Token);
                     Preferences.Set("user_uin", uin);
 
-                    // Получаем данные пользователя
+                    // РџРѕР»СѓС‡Р°РµРј РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
                     var user = await _userService.GetUserByUINAsync(uin, loginResponse.Token);
                     if (user != null)
                     {
-                        string role = user.Role; // Получаем роль из данных пользователя
+                        string role = user.Role; // РџРѕР»СѓС‡Р°РµРј СЂРѕР»СЊ РёР· РґР°РЅРЅС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
                         Preferences.Set("user_role", role);
 
-                        // Переход на Desktop
+                        // РџРµСЂРµС…РѕРґ РЅР° Desktop
                         Application.Current.MainPage = new NavigationPage(new Desktop(role, uin, loginResponse.Token));
                     }
                     else

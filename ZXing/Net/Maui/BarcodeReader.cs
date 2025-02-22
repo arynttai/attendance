@@ -1,4 +1,4 @@
-﻿namespace ZXing.Net.Maui
+namespace ZXing.Net.Maui
 {
 	internal class BarcodeReader
 	{

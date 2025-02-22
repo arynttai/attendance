@@ -62,14 +62,14 @@ namespace AC
                 var groups = await LoadGroupsFromDatabaseAsync();
                 if (!groups.Any())
                 {
-                    throw new Exception("Список групп пуст.");
+                    throw new Exception("РЎРїРёСЃРѕРє РіСЂСѓРїРї РїСѓСЃС‚.");
                 }
 
                 groupPicker.ItemsSource = groups;
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Ошибка", $"Не удалось загрузить список групп: {ex.Message}", "OK");
+                await DisplayAlert("РћС€РёР±РєР°", $"РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ СЃРїРёСЃРѕРє РіСЂСѓРїРї: {ex.Message}", "OK");
             }
         }
 
@@ -89,7 +89,7 @@ namespace AC
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Ошибка", $"Не удалось загрузить данные пользователя: {ex.Message}", "OK");
+                await DisplayAlert("РћС€РёР±РєР°", $"РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ: {ex.Message}", "OK");
             }
         }
 
@@ -99,7 +99,7 @@ namespace AC
             var user = await _userService.GetUserByUINAsync(_uin, _token);
             if (user == null)
             {
-                throw new Exception("Не удалось получить данные пользователя.");
+                throw new Exception("РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ.");
             }
 
             _teacherFullName = $"{user.LastName} {user.FirstName}";
@@ -124,7 +124,7 @@ namespace AC
             {
                 if (subjectPicker.SelectedItem == null)
                 {
-                    await DisplayAlert("Ошибка", "Пожалуйста, выберите предмет.", "OK");
+                    await DisplayAlert("РћС€РёР±РєР°", "РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РІС‹Р±РµСЂРёС‚Рµ РїСЂРµРґРјРµС‚.", "OK");
                     return;
                 }
 
@@ -132,7 +132,7 @@ namespace AC
                 {
                     LessonId = Guid.NewGuid().ToString(),
                     Teacher = _teacherFullName,
-                    TeacherUIN = _uin, // Это свойство должно корректно мапиться
+                    TeacherUIN = _uin, // Р­С‚Рѕ СЃРІРѕР№СЃС‚РІРѕ РґРѕР»Р¶РЅРѕ РєРѕСЂСЂРµРєС‚РЅРѕ РјР°РїРёС‚СЊСЃСЏ
                     StartTime = DateTime.Today.Add(startTimePicker.Time),
                     EndTime = DateTime.Today.Add(endTimePicker.Time),
                     Room = roomEntry.Text,
@@ -142,33 +142,33 @@ namespace AC
                 };
 
 
-                // Сохраняем урок
+                // РЎРѕС…СЂР°РЅСЏРµРј СѓСЂРѕРє
                 await SaveLessonToDatabaseAsync(newLesson);
 
-                // Инициализируем посещаемость
+                // РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РїРѕСЃРµС‰Р°РµРјРѕСЃС‚СЊ
                 await InitializeAttendanceAsync(newLesson.LessonId, newLesson.Group);
 
-                await DisplayAlert("Успех", "Урок успешно добавлен.", "OK");
+                await DisplayAlert("РЈСЃРїРµС…", "РЈСЂРѕРє СѓСЃРїРµС€РЅРѕ РґРѕР±Р°РІР»РµРЅ.", "OK");
                 await Navigation.PushAsync(new RoomInfo(_role, _uin, _roomid, _token));
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Ошибка", $"Не удалось сохранить урок: {ex.Message}", "OK");
+                await DisplayAlert("РћС€РёР±РєР°", $"РќРµ СѓРґР°Р»РѕСЃСЊ СЃРѕС…СЂР°РЅРёС‚СЊ СѓСЂРѕРє: {ex.Message}", "OK");
             }
         }
 
         private async Task InitializeAttendanceAsync(string lessonId, string groupName)
         {
-            // Шаг 1. Находим все UIN студентов, у которых group = groupName
+            // РЁР°Рі 1. РќР°С…РѕРґРёРј РІСЃРµ UIN СЃС‚СѓРґРµРЅС‚РѕРІ, Сѓ РєРѕС‚РѕСЂС‹С… group = groupName
             const string getGroupUsersSql = @"
         SELECT uin
         FROM users
         WHERE ""group"" = @GroupName
     ";
 
-            // Шаг 2. Для каждого студента делаем INSERT в student_attendance со status='red'
-            // Используем ON CONFLICT (lessonid, uin) DO NOTHING или DO UPDATE,
-            // но обычно достаточно DO NOTHING, чтобы не перезаписать, если вдруг запись уже есть.
+            // РЁР°Рі 2. Р”Р»СЏ РєР°Р¶РґРѕРіРѕ СЃС‚СѓРґРµРЅС‚Р° РґРµР»Р°РµРј INSERT РІ student_attendance СЃРѕ status='red'
+            // РСЃРїРѕР»СЊР·СѓРµРј ON CONFLICT (lessonid, uin) DO NOTHING РёР»Рё DO UPDATE,
+            // РЅРѕ РѕР±С‹С‡РЅРѕ РґРѕСЃС‚Р°С‚РѕС‡РЅРѕ DO NOTHING, С‡С‚РѕР±С‹ РЅРµ РїРµСЂРµР·Р°РїРёСЃР°С‚СЊ, РµСЃР»Рё РІРґСЂСѓРі Р·Р°РїРёСЃСЊ СѓР¶Рµ РµСЃС‚СЊ.
 
             const string insertRedSql = @"
         INSERT INTO student_attendance (lessonid, uin, status, scantime, is_status_manually_overridden)
@@ -179,9 +179,9 @@ namespace AC
             using var connection = new NpgsqlConnection(connectionString);
             await connection.OpenAsync();
 
-            // 1. Получаем список UIN
+            // 1. РџРѕР»СѓС‡Р°РµРј СЃРїРёСЃРѕРє UIN
             var studentUins = await connection.QueryAsync<string>(getGroupUsersSql, new { GroupName = groupName });
-            // 2. Для каждого делаем вставку 'red'
+            // 2. Р”Р»СЏ РєР°Р¶РґРѕРіРѕ РґРµР»Р°РµРј РІСЃС‚Р°РІРєСѓ 'red'
             foreach (var uin in studentUins)
             {
                 await connection.ExecuteAsync(insertRedSql, new
@@ -193,7 +193,7 @@ namespace AC
         }
 
 
-        // Метод для сохранения урока в БД
+        // РњРµС‚РѕРґ РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ СѓСЂРѕРєР° РІ Р‘Р”
         private async Task SaveLessonToDatabaseAsync(Lesson lesson)
         {
             const string insertQuery = @"
@@ -236,7 +236,7 @@ VALUES (@LessonId, @Teacher, @TeacherUIN, @StartTime, @EndTime, @Room, @Group, @
 
             await using var command = new NpgsqlCommand(query, connection);
 
-            // Вот эта строка критически важна!
+            // Р’РѕС‚ СЌС‚Р° СЃС‚СЂРѕРєР° РєСЂРёС‚РёС‡РµСЃРєРё РІР°Р¶РЅР°!
             command.Parameters.AddWithValue("@TeacherUIN", _uin);
 
             await using var reader = await command.ExecuteReaderAsync();
@@ -257,14 +257,14 @@ VALUES (@LessonId, @Teacher, @TeacherUIN, @StartTime, @EndTime, @Room, @Group, @
                 var subjects = await LoadSubjectsFromDatabaseAsync();
                 if (!subjects.Any())
                 {
-                    throw new Exception("Список предметов пуст.");
+                    throw new Exception("РЎРїРёСЃРѕРє РїСЂРµРґРјРµС‚РѕРІ РїСѓСЃС‚.");
                 }
 
                 subjectPicker.ItemsSource = subjects;
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Ошибка", $"Не удалось загрузить список предметов: {ex.Message}", "OK");
+                await DisplayAlert("РћС€РёР±РєР°", $"РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ СЃРїРёСЃРѕРє РїСЂРµРґРјРµС‚РѕРІ: {ex.Message}", "OK");
             }
         }
 

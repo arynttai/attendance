@@ -11,10 +11,10 @@ public partial class StartPage : ContentPage
     }
     private async void NavigateToSignInWithDelay()
     {
-        // Задержка на 5 секунд
+        // Р—Р°РґРµСЂР¶РєР° РЅР° 5 СЃРµРєСѓРЅРґ
         await Task.Delay(5000);
 
-        // Переход на страницу SignIn
+        // РџРµСЂРµС…РѕРґ РЅР° СЃС‚СЂР°РЅРёС†Сѓ SignIn
         await Navigation.PushAsync(new SignIn());
     }
 }

@@ -24,17 +24,17 @@ namespace AC
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
 
-            // Если преподаватель, скрываем диаграмму
+            // Р•СЃР»Рё РїСЂРµРїРѕРґР°РІР°С‚РµР»СЊ, СЃРєСЂС‹РІР°РµРј РґРёР°РіСЂР°РјРјСѓ
             if (_role == "teacher")
             {
                 ChartFrame.IsVisible = false;
             }
 
-            // Значения по умолчанию для дат
+            // Р—РЅР°С‡РµРЅРёСЏ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РґР»СЏ РґР°С‚
             fromDatePicker.Date = DateTime.Now.AddDays(-30);
             toDatePicker.Date = DateTime.Now;
 
-            // Загрузка данных
+            // Р—Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С…
             LoadDataAsync(fromDatePicker.Date, toDatePicker.Date);
         }
 
@@ -65,8 +65,8 @@ namespace AC
 
                     if (_role == "teacher")
                     {
-                        // Запрос только по конкретному преподавателю (teacheruin),
-                        // без привязки к группе.
+                        // Р—Р°РїСЂРѕСЃ С‚РѕР»СЊРєРѕ РїРѕ РєРѕРЅРєСЂРµС‚РЅРѕРјСѓ РїСЂРµРїРѕРґР°РІР°С‚РµР»СЋ (teacheruin),
+                        // Р±РµР· РїСЂРёРІСЏР·РєРё Рє РіСЂСѓРїРїРµ.
                         string teacherLessonsQuery = @"
                     SELECT 
                         l.lessonid,
@@ -100,21 +100,21 @@ namespace AC
                             {
                                 TeacherName = $"{lastName} {firstName}",
                                 LessonTime = $"{startTime:dd.MM.yyyy HH:mm} - {endTime:HH:mm}",
-                                // Для преподавателя мы не показываем статусы —
-                                // используем нейтральный цвет
+                                // Р”Р»СЏ РїСЂРµРїРѕРґР°РІР°С‚РµР»СЏ РјС‹ РЅРµ РїРѕРєР°Р·С‹РІР°РµРј СЃС‚Р°С‚СѓСЃС‹ вЂ”
+                                // РёСЃРїРѕР»СЊР·СѓРµРј РЅРµР№С‚СЂР°Р»СЊРЅС‹Р№ С†РІРµС‚
                                 AttendanceColor = Color.FromArgb("#9E9E9E")
                             });
                         }
 
                         lessonsCollectionView.ItemsSource = lessons;
-                        // Диаграмму не отображаем, если преподаватель
+                        // Р”РёР°РіСЂР°РјРјСѓ РЅРµ РѕС‚РѕР±СЂР°Р¶Р°РµРј, РµСЃР»Рё РїСЂРµРїРѕРґР°РІР°С‚РµР»СЊ
                         ChartFrame.IsVisible = false;
                     }
                     else
                     {
-                        // Запрос для студента: 
-                        // Фильтруем занятия по дате + выводим конкретный статус 
-                        // (green/yellow/red/etc.), который хранится в student_attendance.
+                        // Р—Р°РїСЂРѕСЃ РґР»СЏ СЃС‚СѓРґРµРЅС‚Р°: 
+                        // Р¤РёР»СЊС‚СЂСѓРµРј Р·Р°РЅСЏС‚РёСЏ РїРѕ РґР°С‚Рµ + РІС‹РІРѕРґРёРј РєРѕРЅРєСЂРµС‚РЅС‹Р№ СЃС‚Р°С‚СѓСЃ 
+                        // (green/yellow/red/etc.), РєРѕС‚РѕСЂС‹Р№ С…СЂР°РЅРёС‚СЃСЏ РІ student_attendance.
                         string lessonsQuery = @"
                     SELECT 
                         l.lessonid,
@@ -135,7 +135,7 @@ namespace AC
 
                         var lessons = new List<LessonInfoItem>();
 
-                        // Словарь для подсчёта каждого статуса (для диаграммы)
+                        // РЎР»РѕРІР°СЂСЊ РґР»СЏ РїРѕРґСЃС‡С‘С‚Р° РєР°Р¶РґРѕРіРѕ СЃС‚Р°С‚СѓСЃР° (РґР»СЏ РґРёР°РіСЂР°РјРјС‹)
                         var statusDistributionData = new Dictionary<string, int>
                 {
                     { "green", 0 },
@@ -157,8 +157,8 @@ namespace AC
                             var lastName = reader.GetString(3);
                             var firstName = reader.GetString(4);
 
-                            // Если статус не установлен, считаем его "red"
-                            // или иной статус по умолчанию
+                            // Р•СЃР»Рё СЃС‚Р°С‚СѓСЃ РЅРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅ, СЃС‡РёС‚Р°РµРј РµРіРѕ "red"
+                            // РёР»Рё РёРЅРѕР№ СЃС‚Р°С‚СѓСЃ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
                             var attendanceStatus = reader.IsDBNull(6)
                                 ? "red"
                                 : reader.GetString(6);
@@ -182,7 +182,7 @@ namespace AC
 
                         lessonsCollectionView.ItemsSource = lessons;
 
-                        // Обновляем диаграмму
+                        // РћР±РЅРѕРІР»СЏРµРј РґРёР°РіСЂР°РјРјСѓ
                         var statusList = statusDistributionData
                             .Select(kvp => new KeyValuePair<string, int>(kvp.Key, kvp.Value))
                             .ToList();
@@ -194,7 +194,7 @@ namespace AC
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Ошибка", $"Ошибка загрузки статистики: {ex.Message}", "OK");
+                await DisplayAlert("РћС€РёР±РєР°", $"РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё СЃС‚Р°С‚РёСЃС‚РёРєРё: {ex.Message}", "OK");
             }
         }
 

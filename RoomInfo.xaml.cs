@@ -78,7 +78,7 @@ SELECT
             l.endtime,
             l.room,
             l.group,
-            s.subject_name AS Description -- Получаем название предмета
+            s.subject_name AS Description -- РџРѕР»СѓС‡Р°РµРј РЅР°Р·РІР°РЅРёРµ РїСЂРµРґРјРµС‚Р°
         FROM lessons l
         JOIN subjects_teachers st ON st.teacher_id = (
             SELECT id FROM users WHERE uin = @Uin AND role = 'teacher'
@@ -89,15 +89,15 @@ SELECT
           AND l.endtime >= NOW() + INTERVAL '5 hours'";
 
                 using var connection = new NpgsqlConnection(connectionString);
-                await connection.OpenAsync(token); // Передаём токен для отмены
+                await connection.OpenAsync(token); // РџРµСЂРµРґР°С‘Рј С‚РѕРєРµРЅ РґР»СЏ РѕС‚РјРµРЅС‹
 
-                // Передаём параметры в запрос
+                // РџРµСЂРµРґР°С‘Рј РїР°СЂР°РјРµС‚СЂС‹ РІ Р·Р°РїСЂРѕСЃ
                 var lessons = (await connection.QueryAsync<Lesson>(
                     query,
                     new { Uin = _uin, Room = _roomid }
                 )).ToList();
 
-                // Проверяем токен: если операция была отменена, выбрасывается исключение
+                // РџСЂРѕРІРµСЂСЏРµРј С‚РѕРєРµРЅ: РµСЃР»Рё РѕРїРµСЂР°С†РёСЏ Р±С‹Р»Р° РѕС‚РјРµРЅРµРЅР°, РІС‹Р±СЂР°СЃС‹РІР°РµС‚СЃСЏ РёСЃРєР»СЋС‡РµРЅРёРµ
                 token.ThrowIfCancellationRequested();
 
                 if (!lessons.Any())
@@ -109,7 +109,7 @@ SELECT
 
                 Debug.WriteLine($"[INFO] Found {lessons.Count} ongoing lessons.");
 
-                // Обновляем UI только если не отменено
+                // РћР±РЅРѕРІР»СЏРµРј UI С‚РѕР»СЊРєРѕ РµСЃР»Рё РЅРµ РѕС‚РјРµРЅРµРЅРѕ
                 if (!token.IsCancellationRequested)
                 {
                     lessonsListView.ItemsSource = lessons;
@@ -118,21 +118,21 @@ SELECT
             catch (OperationCanceledException)
             {
                 Debug.WriteLine("[INFO] LoadLessonsAsync was canceled.");
-                // Здесь можно ничего не делать — операция прервана
+                // Р—РґРµСЃСЊ РјРѕР¶РЅРѕ РЅРёС‡РµРіРѕ РЅРµ РґРµР»Р°С‚СЊ вЂ” РѕРїРµСЂР°С†РёСЏ РїСЂРµСЂРІР°РЅР°
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"[ERROR] Failed to load lessons: {ex.Message}");
 
-                // Отображаем ошибку только если не отменено
+                // РћС‚РѕР±СЂР°Р¶Р°РµРј РѕС€РёР±РєСѓ С‚РѕР»СЊРєРѕ РµСЃР»Рё РЅРµ РѕС‚РјРµРЅРµРЅРѕ
                 if (!token.IsCancellationRequested)
                 {
-                    await DisplayAlert("Ошибка", "Не удалось загрузить уроки.", "OK");
+                    await DisplayAlert("РћС€РёР±РєР°", "РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ СѓСЂРѕРєРё.", "OK");
                 }
             }
             finally
             {
-                // Убираем индикаторы загрузки только если не отменено
+                // РЈР±РёСЂР°РµРј РёРЅРґРёРєР°С‚РѕСЂС‹ Р·Р°РіСЂСѓР·РєРё С‚РѕР»СЊРєРѕ РµСЃР»Рё РЅРµ РѕС‚РјРµРЅРµРЅРѕ
                 if (!token.IsCancellationRequested)
                 {
                     loadingIndicator.IsRunning = false;
@@ -150,9 +150,9 @@ SELECT
 
             if (_cts != null)
             {
-                _cts.Cancel(); // Отменяем все операции
-                _cts.Dispose(); // Освобождаем ресурсы
-                _cts = null; // Обнуляем ссылку
+                _cts.Cancel(); // РћС‚РјРµРЅСЏРµРј РІСЃРµ РѕРїРµСЂР°С†РёРё
+                _cts.Dispose(); // РћСЃРІРѕР±РѕР¶РґР°РµРј СЂРµСЃСѓСЂСЃС‹
+                _cts = null; // РћР±РЅСѓР»СЏРµРј СЃСЃС‹Р»РєСѓ
             }
         }
 
@@ -177,7 +177,7 @@ SELECT
             {
                 LessonsStackLayout.Children.Add(new Label
                 {
-                    Text = "В данной аудитории пока нет созданных уроков. Вы можете создать новый.",
+                    Text = "Р’ РґР°РЅРЅРѕР№ Р°СѓРґРёС‚РѕСЂРёРё РїРѕРєР° РЅРµС‚ СЃРѕР·РґР°РЅРЅС‹С… СѓСЂРѕРєРѕРІ. Р’С‹ РјРѕР¶РµС‚Рµ СЃРѕР·РґР°С‚СЊ РЅРѕРІС‹Р№.",
                     FontSize = 15,
                     TextColor = Color.FromArgb("#AAADB2"),
                     HorizontalOptions = LayoutOptions.Center,
@@ -191,7 +191,7 @@ SELECT
             {
                 LessonsStackLayout.Children.Add(new Label
                 {
-                    Text = "В данной аудитории пока нет доступных уроков.",
+                    Text = "Р’ РґР°РЅРЅРѕР№ Р°СѓРґРёС‚РѕСЂРёРё РїРѕРєР° РЅРµС‚ РґРѕСЃС‚СѓРїРЅС‹С… СѓСЂРѕРєРѕРІ.",
                     FontSize = 15,
                     TextColor = Color.FromArgb("#AAADB2"),
                     HorizontalOptions = LayoutOptions.Center,

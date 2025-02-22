@@ -26,7 +26,7 @@ namespace AC
             _lessonService = new LessonService();
         }
 
-        // Конструктор, принимающий role, uin и token
+        // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ, РїСЂРёРЅРёРјР°СЋС‰РёР№ role, uin Рё token
         public Desktop(string role, string uin, string token)
         {
             InitializeComponent();
@@ -36,8 +36,8 @@ namespace AC
             _token = token;
             _lessonService = new LessonService();
             RoleSpecificText = _role == "teacher"
-            ? "Нажмите, чтобы отсканировать QR-код аудитории"
-            : "Нажмите, чтобы перейти к событию";
+            ? "РќР°Р¶РјРёС‚Рµ, С‡С‚РѕР±С‹ РѕС‚СЃРєР°РЅРёСЂРѕРІР°С‚СЊ QR-РєРѕРґ Р°СѓРґРёС‚РѕСЂРёРё"
+            : "РќР°Р¶РјРёС‚Рµ, С‡С‚РѕР±С‹ РїРµСЂРµР№С‚Рё Рє СЃРѕР±С‹С‚РёСЋ";
             BindingContext = this;
             Debug.WriteLine($"Desktop Initialized with Role: {_role}, UIN: {_uin}, Token: {_token}");
         }
@@ -95,7 +95,7 @@ namespace AC
 
                     var lesson = await connection.QueryFirstOrDefaultAsync<Lesson>(query, new { GroupId = groupId, CurrentTime = currentTime });
 
-                    // Отладочный вывод
+                    // РћС‚Р»Р°РґРѕС‡РЅС‹Р№ РІС‹РІРѕРґ
                     if (lesson == null)
                     {
                         Debug.WriteLine($"[DEBUG] No lesson found for Group: {groupId}, Current Time: {currentTime}");
@@ -116,7 +116,7 @@ namespace AC
         }
 
 
-        // Переход на страницу Profile
+        // РџРµСЂРµС…РѕРґ РЅР° СЃС‚СЂР°РЅРёС†Сѓ Profile
         private async void OnProfileClicked(object sender, EventArgs e)
         {
             var profilePage = new Profile(_role, _uin, _token);
@@ -124,7 +124,7 @@ namespace AC
             await Navigation.PushAsync(profilePage);
         }
 
-        // Переход на страницу Statistics
+        // РџРµСЂРµС…РѕРґ РЅР° СЃС‚СЂР°РЅРёС†Сѓ Statistics
         private async void OnStatisticsClicked(object sender, EventArgs e)
         {
             var statisticsPage = new Statistics(_role, _uin, _token);
@@ -132,26 +132,26 @@ namespace AC
             await Navigation.PushAsync(statisticsPage);
         }
 
-        // Переход на страницу Lesson или ScanWindow
+        // РџРµСЂРµС…РѕРґ РЅР° СЃС‚СЂР°РЅРёС†Сѓ Lesson РёР»Рё ScanWindow
         private async void OnLessonButtonClicked(object sender, EventArgs e)
         {
             try
             {
                 if (_role == "teacher")
                 {
-                    // Проверяем, есть ли текущий урок у преподавателя
-                    var currentTime = DateTime.UtcNow.AddHours(5); // UTC+5 условно
+                    // РџСЂРѕРІРµСЂСЏРµРј, РµСЃС‚СЊ Р»Рё С‚РµРєСѓС‰РёР№ СѓСЂРѕРє Сѓ РїСЂРµРїРѕРґР°РІР°С‚РµР»СЏ
+                    var currentTime = DateTime.UtcNow.AddHours(5); // UTC+5 СѓСЃР»РѕРІРЅРѕ
                     var currentLesson = await GetCurrentLessonForTeacherAsync(_uin, currentTime);
 
                     if (currentLesson != null)
                     {
-                        // Если есть текущий урок, переходим на LessonInfo
+                        // Р•СЃР»Рё РµСЃС‚СЊ С‚РµРєСѓС‰РёР№ СѓСЂРѕРє, РїРµСЂРµС…РѕРґРёРј РЅР° LessonInfo
                         Debug.WriteLine($"[DEBUG] Found current lesson for teacher: {currentLesson.LessonId}");
                         await Navigation.PushAsync(new LessonInfo(_role, _uin, _token, currentLesson));
                     }
                     else
                     {
-                        // Если нет текущего урока, переходим на окно сканирования
+                        // Р•СЃР»Рё РЅРµС‚ С‚РµРєСѓС‰РµРіРѕ СѓСЂРѕРєР°, РїРµСЂРµС…РѕРґРёРј РЅР° РѕРєРЅРѕ СЃРєР°РЅРёСЂРѕРІР°РЅРёСЏ
                         var scanWindowPage = new ScanWindow(_role, _uin, _token);
                         Debug.WriteLine($"Navigating to ScanWindow with Role: {_role}, UIN: {_uin}, Token: {_token}");
                         await Navigation.PushAsync(scanWindowPage);
@@ -159,37 +159,37 @@ namespace AC
                 }
                 else if (_role == "student")
                 {
-                    // Логика для студента остаётся без изменений
+                    // Р›РѕРіРёРєР° РґР»СЏ СЃС‚СѓРґРµРЅС‚Р° РѕСЃС‚Р°С‘С‚СЃСЏ Р±РµР· РёР·РјРµРЅРµРЅРёР№
                     string groupId = await GetStudentGroupAsync(_uin);
                     if (string.IsNullOrWhiteSpace(groupId))
                     {
-                        await DisplayAlert("Ошибка", "Не удалось определить вашу группу.", "OK");
+                        await DisplayAlert("РћС€РёР±РєР°", "РќРµ СѓРґР°Р»РѕСЃСЊ РѕРїСЂРµРґРµР»РёС‚СЊ РІР°С€Сѓ РіСЂСѓРїРїСѓ.", "OK");
                         return;
                     }
 
-                    var currentTime = DateTime.UtcNow.AddHours(5); // UTC+5 условно
+                    var currentTime = DateTime.UtcNow.AddHours(5); // UTC+5 СѓСЃР»РѕРІРЅРѕ
                     var lesson = await GetCurrentLessonForGroupAsync(groupId, currentTime);
 
                     if (lesson == null)
                     {
-                        await DisplayAlert("Нет уроков", "В данный момент у вас нет доступных уроков.", "OK");
+                        await DisplayAlert("РќРµС‚ СѓСЂРѕРєРѕРІ", "Р’ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ Сѓ РІР°СЃ РЅРµС‚ РґРѕСЃС‚СѓРїРЅС‹С… СѓСЂРѕРєРѕРІ.", "OK");
                         return;
                     }
 
-                    string enteredPin = await DisplayPromptAsync("Введите PIN-код", "Введите PIN-код для текущего урока:");
+                    string enteredPin = await DisplayPromptAsync("Р’РІРµРґРёС‚Рµ PIN-РєРѕРґ", "Р’РІРµРґРёС‚Рµ PIN-РєРѕРґ РґР»СЏ С‚РµРєСѓС‰РµРіРѕ СѓСЂРѕРєР°:");
                     if (string.IsNullOrWhiteSpace(enteredPin))
                     {
-                        await DisplayAlert("Ошибка", "PIN-код не может быть пустым.", "OK");
+                        await DisplayAlert("РћС€РёР±РєР°", "PIN-РєРѕРґ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РїСѓСЃС‚С‹Рј.", "OK");
                         return;
                     }
 
                     if (enteredPin != lesson.PinCode)
                     {
-                        await DisplayAlert("Ошибка", "Неверный PIN-код. Попробуйте еще раз.", "OK");
+                        await DisplayAlert("РћС€РёР±РєР°", "РќРµРІРµСЂРЅС‹Р№ PIN-РєРѕРґ. РџРѕРїСЂРѕР±СѓР№С‚Рµ РµС‰Рµ СЂР°Р·.", "OK");
                         return;
                     }
 
-                    var scanTime = DateTime.UtcNow.AddHours(5); // UTC+5 условно
+                    var scanTime = DateTime.UtcNow.AddHours(5); // UTC+5 СѓСЃР»РѕРІРЅРѕ
                     var lessonStart = lesson.StartTime;
                     var diffMinutes = (scanTime - lessonStart).TotalMinutes;
 
@@ -202,7 +202,7 @@ namespace AC
             catch (Exception ex)
             {
                 Debug.WriteLine($"[ERROR] OnLessonButtonClicked failed: {ex.Message}");
-                await DisplayAlert("Ошибка", "Произошла ошибка при обработке.", "OK");
+                await DisplayAlert("РћС€РёР±РєР°", "РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РїСЂРё РѕР±СЂР°Р±РѕС‚РєРµ.", "OK");
             }
         }
 
@@ -277,7 +277,7 @@ WHERE student_attendance.scantime IS NULL;
 
 
 
-        // Переход на главную страницу
+        // РџРµСЂРµС…РѕРґ РЅР° РіР»Р°РІРЅСѓСЋ СЃС‚СЂР°РЅРёС†Сѓ
         private async void OnDesktopClicked(object sender, EventArgs e)
         {
             try
@@ -287,7 +287,7 @@ WHERE student_attendance.scantime IS NULL;
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Ошибка", "Произошла ошибка при переходе на главный экран.", "OK");
+                await DisplayAlert("РћС€РёР±РєР°", "РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РїСЂРё РїРµСЂРµС…РѕРґРµ РЅР° РіР»Р°РІРЅС‹Р№ СЌРєСЂР°РЅ.", "OK");
             }
         }
     }

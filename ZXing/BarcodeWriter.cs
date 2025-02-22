@@ -1,4 +1,4 @@
-﻿using ZXing.Common;
+using ZXing.Common;
 
 namespace ZXing
 {

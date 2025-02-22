@@ -1,4 +1,4 @@
-﻿/*public class User
+/*public class User
 {
 	public string Role { get; set; }
 	public string LastName { get; set; }

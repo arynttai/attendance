@@ -19,24 +19,24 @@ namespace AC
             _uin = uin;
             _token = token;
             _userService = new UserService();
-            LoadUserDataAsync(); // Загрузка данных пользователя
+            LoadUserDataAsync(); // Р—Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         }
 
         private async Task LoadUserDataAsync()
         {
             try
             {
-                // Получение данных пользователя
+                // РџРѕР»СѓС‡РµРЅРёРµ РґР°РЅРЅС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
                 var user = await _userService.GetUserByUINAsync(_uin, _token);
 
-                // Автоматическое заполнение полей
-                emailEntry.Text = user.Email; // Заполняем email
-                phoneEntry.Text = user.PhoneNumber; // Заполняем номер телефона
+                // РђРІС‚РѕРјР°С‚РёС‡РµСЃРєРѕРµ Р·Р°РїРѕР»РЅРµРЅРёРµ РїРѕР»РµР№
+                emailEntry.Text = user.Email; // Р—Р°РїРѕР»РЅСЏРµРј email
+                phoneEntry.Text = user.PhoneNumber; // Р—Р°РїРѕР»РЅСЏРµРј РЅРѕРјРµСЂ С‚РµР»РµС„РѕРЅР°
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[ChangeProfile] Error loading user data: {ex.Message}");
-                await DisplayAlert("Ошибка", "Не удалось загрузить данные пользователя.", "OK");
+                await DisplayAlert("РћС€РёР±РєР°", "РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ.", "OK");
             }
         }
 
@@ -44,31 +44,31 @@ namespace AC
         {
             try
             {
-                // Обновление данных пользователя
+                // РћР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
                 var updatedUser = new User
                 {
                     uin = _uin,
-                    Email = emailEntry.Text, // Получение обновленного Email
-                    PhoneNumber = phoneEntry.Text, // Получение обновленного номера телефона
+                    Email = emailEntry.Text, // РџРѕР»СѓС‡РµРЅРёРµ РѕР±РЅРѕРІР»РµРЅРЅРѕРіРѕ Email
+                    PhoneNumber = phoneEntry.Text, // РџРѕР»СѓС‡РµРЅРёРµ РѕР±РЅРѕРІР»РµРЅРЅРѕРіРѕ РЅРѕРјРµСЂР° С‚РµР»РµС„РѕРЅР°
                     Role = _role
                 };
 
-                // Сохранение изменений
+                // РЎРѕС…СЂР°РЅРµРЅРёРµ РёР·РјРµРЅРµРЅРёР№
                 await _userService.UpdateUserAsync(updatedUser, _token);
 
-                // Возврат на страницу профиля
+                // Р’РѕР·РІСЂР°С‚ РЅР° СЃС‚СЂР°РЅРёС†Сѓ РїСЂРѕС„РёР»СЏ
                 await Navigation.PopAsync();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[ChangeProfile] Error saving user data: {ex.Message}");
-                await DisplayAlert("Ошибка", "Не удалось сохранить изменения.", "OK");
+                await DisplayAlert("РћС€РёР±РєР°", "РќРµ СѓРґР°Р»РѕСЃСЊ СЃРѕС…СЂР°РЅРёС‚СЊ РёР·РјРµРЅРµРЅРёСЏ.", "OK");
             }
         }
 
         private async void OnCancelClicked(object sender, EventArgs e)
         {
-            // Возврат без сохранения
+            // Р’РѕР·РІСЂР°С‚ Р±РµР· СЃРѕС…СЂР°РЅРµРЅРёСЏ
             await Navigation.PopAsync();
         }
 

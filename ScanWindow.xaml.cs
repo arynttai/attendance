@@ -85,7 +85,7 @@ namespace AC
             catch (Exception ex)
             {
                 Console.WriteLine($"[ERROR] Database Error: {ex.Message}");
-                await DisplayAlert("Ошибка", "Ошибка при подключении к базе данных.", "OK");
+                await DisplayAlert("РћС€РёР±РєР°", "РћС€РёР±РєР° РїСЂРё РїРѕРґРєР»СЋС‡РµРЅРёРё Рє Р±Р°Р·Рµ РґР°РЅРЅС‹С….", "OK");
                 return false;
             }
         }
@@ -109,7 +109,7 @@ namespace AC
                 {
                     await MainThread.InvokeOnMainThreadAsync(async () =>
                     {
-                        await DisplayAlert("Ошибка", "Неверный QR-код", "OK");
+                        await DisplayAlert("РћС€РёР±РєР°", "РќРµРІРµСЂРЅС‹Р№ QR-РєРѕРґ", "OK");
                     });
                     _isProcessing = false;
                     return;
@@ -121,7 +121,7 @@ namespace AC
                 {
                     await MainThread.InvokeOnMainThreadAsync(async () =>
                     {
-                        await DisplayAlert("Ошибка", "Аудитория не найдена в базе данных.", "OK");
+                        await DisplayAlert("РћС€РёР±РєР°", "РђСѓРґРёС‚РѕСЂРёСЏ РЅРµ РЅР°Р№РґРµРЅР° РІ Р±Р°Р·Рµ РґР°РЅРЅС‹С….", "OK");
                     });
                     _isProcessing = false;
                     return;
@@ -141,14 +141,14 @@ namespace AC
                     catch (Exception ex)
                     {
                         Console.WriteLine($"[ERROR] Failed to navigate to RoomInfo: {ex.Message}");
-                        await DisplayAlert("Ошибка", "Не удалось перейти на страницу урока.", "OK");
+                        await DisplayAlert("РћС€РёР±РєР°", "РќРµ СѓРґР°Р»РѕСЃСЊ РїРµСЂРµР№С‚Рё РЅР° СЃС‚СЂР°РЅРёС†Сѓ СѓСЂРѕРєР°.", "OK");
                     }
                 });
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[ERROR] Exception: {ex.Message}");
-                await DisplayAlert("Ошибка", "Произошла ошибка при обработке QR-кода.", "OK");
+                await DisplayAlert("РћС€РёР±РєР°", "РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РїСЂРё РѕР±СЂР°Р±РѕС‚РєРµ QR-РєРѕРґР°.", "OK");
             }
             finally
             {
@@ -168,7 +168,7 @@ namespace AC
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Ошибка", "Не удалось сфотографировать QR-код.", "OK");
+                await DisplayAlert("РћС€РёР±РєР°", "РќРµ СѓРґР°Р»РѕСЃСЊ СЃС„РѕС‚РѕРіСЂР°С„РёСЂРѕРІР°С‚СЊ QR-РєРѕРґ.", "OK");
                 Console.WriteLine($"[ERROR] Exception in OnCaptureButtonClicked: {ex.Message}");
             }
         }
@@ -181,7 +181,7 @@ namespace AC
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Ошибка", "Произошла ошибка при возврате на главный экран.", "OK");
+                await DisplayAlert("РћС€РёР±РєР°", "РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РїСЂРё РІРѕР·РІСЂР°С‚Рµ РЅР° РіР»Р°РІРЅС‹Р№ СЌРєСЂР°РЅ.", "OK");
             }
         }
 
@@ -193,7 +193,7 @@ namespace AC
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Ошибка", "Произошла ошибка при переходе на главный экран.", "OK");
+                await DisplayAlert("РћС€РёР±РєР°", "РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РїСЂРё РїРµСЂРµС…РѕРґРµ РЅР° РіР»Р°РІРЅС‹Р№ СЌРєСЂР°РЅ.", "OK");
             }
         }
 
@@ -205,7 +205,7 @@ namespace AC
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Ошибка", "Произошла ошибка при переходе на страницу профиля.", "OK");
+                await DisplayAlert("РћС€РёР±РєР°", "РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РїСЂРё РїРµСЂРµС…РѕРґРµ РЅР° СЃС‚СЂР°РЅРёС†Сѓ РїСЂРѕС„РёР»СЏ.", "OK");
             }
         }
 

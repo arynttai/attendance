@@ -30,7 +30,7 @@ namespace AC
             catch (Exception ex)
             {
                 Debug.WriteLine($"[ERROR] Navigation to Desktop failed: {ex.Message}");
-                await DisplayAlert("Ошибка", "Произошла ошибка при переходе на Desktop.", "OK");
+                await DisplayAlert("РћС€РёР±РєР°", "РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РїСЂРё РїРµСЂРµС…РѕРґРµ РЅР° Desktop.", "OK");
             }
         }
 

@@ -1,4 +1,4 @@
-﻿namespace AC
+namespace AC
 {
     public partial class AppShell : Shell
     {

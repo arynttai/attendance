@@ -17,7 +17,7 @@ namespace AC
         private string _role;
         private string _uin;
         private string _token;
-        private Lesson _lesson;  // Добавлено поле для хранения roomid
+        private Lesson _lesson;  // Р”РѕР±Р°РІР»РµРЅРѕ РїРѕР»Рµ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ roomid
 
         public LessonInfo(string role, string uin, string token, Lesson lesson)
         {
@@ -26,13 +26,13 @@ namespace AC
             _role = role;
             _uin = uin;
             _token = token;
-            _lesson = lesson;  // Сохраняем объект урока
+            _lesson = lesson;  // РЎРѕС…СЂР°РЅСЏРµРј РѕР±СЉРµРєС‚ СѓСЂРѕРєР°
             if (_role == "student")
             {
                 saveButton.IsVisible = false;
             }
 
-            // Привязываем данные урока к BindingContext
+            // РџСЂРёРІСЏР·С‹РІР°РµРј РґР°РЅРЅС‹Рµ СѓСЂРѕРєР° Рє BindingContext
             BindingContext = new
             {
                 LessonDate = _lesson.StartTime.ToString("dd.MM.yyyy"),
@@ -106,19 +106,19 @@ namespace AC
 
             if (_role == "student")
             {
-                // Стилизованный Frame
+                // РЎС‚РёР»РёР·РѕРІР°РЅРЅС‹Р№ Frame
                 var successFrame = new Frame
                 {
-                    BackgroundColor = Color.FromArgb("#E8F5E9"), // Нежный зелёный (можно поменять по вкусу)
-                    BorderColor = Color.FromArgb("#4CAF50"),     // Более тёмный зелёный для рамки
-                    CornerRadius = 12,                          // Радиус скругления
-                    Margin = new Thickness(0, 30),              // Отступы сверху и снизу
+                    BackgroundColor = Color.FromArgb("#E8F5E9"), // РќРµР¶РЅС‹Р№ Р·РµР»С‘РЅС‹Р№ (РјРѕР¶РЅРѕ РїРѕРјРµРЅСЏС‚СЊ РїРѕ РІРєСѓСЃСѓ)
+                    BorderColor = Color.FromArgb("#4CAF50"),     // Р‘РѕР»РµРµ С‚С‘РјРЅС‹Р№ Р·РµР»С‘РЅС‹Р№ РґР»СЏ СЂР°РјРєРё
+                    CornerRadius = 12,                          // Р Р°РґРёСѓСЃ СЃРєСЂСѓРіР»РµРЅРёСЏ
+                    Margin = new Thickness(0, 30),              // РћС‚СЃС‚СѓРїС‹ СЃРІРµСЂС…Сѓ Рё СЃРЅРёР·Сѓ
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
                     Padding = new Thickness(10),
                     Content = new Label
                     {
-                        Text = "Вы успешно отметились!",
+                        Text = "Р’С‹ СѓСЃРїРµС€РЅРѕ РѕС‚РјРµС‚РёР»РёСЃСЊ!",
                         FontSize = 15,
                         FontAttributes = FontAttributes.Bold,
                         TextColor = Color.FromArgb("#4CAF50"),
@@ -137,7 +137,7 @@ namespace AC
             {
                 StudentsStackLayout.Children.Add(new Label
                 {
-                    Text = "Ни один студент не присоединился к уроку.",
+                    Text = "РќРё РѕРґРёРЅ СЃС‚СѓРґРµРЅС‚ РЅРµ РїСЂРёСЃРѕРµРґРёРЅРёР»СЃСЏ Рє СѓСЂРѕРєСѓ.",
                     FontSize = 16,
                     TextColor = Color.FromArgb("#AAADB2"),
                     HorizontalOptions = LayoutOptions.Center,
@@ -157,75 +157,75 @@ namespace AC
 
         private Frame CreateStudentFrame(Student student)
         {
-            // Родительский контейнер в виде маленькой «карточки»
+            // Р РѕРґРёС‚РµР»СЊСЃРєРёР№ РєРѕРЅС‚РµР№РЅРµСЂ РІ РІРёРґРµ РјР°Р»РµРЅСЊРєРѕР№ В«РєР°СЂС‚РѕС‡РєРёВ»
             var studentFrame = new Frame
             {
                 CornerRadius = 10,
                 BorderColor = Color.FromArgb("#666666"),
-                BackgroundColor = Color.FromArgb("#FFFFFF"), // светлый фон
+                BackgroundColor = Color.FromArgb("#FFFFFF"), // СЃРІРµС‚Р»С‹Р№ С„РѕРЅ
                 Padding = new Thickness(10),
                 Margin = new Thickness(0, 5)
             };
 
-            // Основная сетка для расположения полей (3 колонки)
+            // РћСЃРЅРѕРІРЅР°СЏ СЃРµС‚РєР° РґР»СЏ СЂР°СЃРїРѕР»РѕР¶РµРЅРёСЏ РїРѕР»РµР№ (3 РєРѕР»РѕРЅРєРё)
             var grid = new Grid
             {
                 ColumnDefinitions =
         {
-            new ColumnDefinition { Width = new GridLength(3, GridUnitType.Star) }, // Имя
-            new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) }, // Кружок статуса
-            new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) }  // Время
+            new ColumnDefinition { Width = new GridLength(3, GridUnitType.Star) }, // РРјСЏ
+            new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) }, // РљСЂСѓР¶РѕРє СЃС‚Р°С‚СѓСЃР°
+            new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) }  // Р’СЂРµРјСЏ
         },
                 ColumnSpacing = 5,
                 RowSpacing = 0
             };
 
-            // Имя студента
+            // РРјСЏ СЃС‚СѓРґРµРЅС‚Р°
             var nameLabel = CreateLabel(student.Name, 13, "#201F1F");
 
-            // Создаём BoxView в виде кружочка
+            // РЎРѕР·РґР°С‘Рј BoxView РІ РІРёРґРµ РєСЂСѓР¶РѕС‡РєР°
             var statusColor = student.Status switch
             {
-                "red" => "#FF0000",   // Красный
-                "green" => "#00BF00",   // Зелёный
-                "yellow" => "#FFD700",   // Жёлтый
-                _ => "#00BF00"    // По умолчанию зелёный
+                "red" => "#FF0000",   // РљСЂР°СЃРЅС‹Р№
+                "green" => "#00BF00",   // Р—РµР»С‘РЅС‹Р№
+                "yellow" => "#FFD700",   // Р–С‘Р»С‚С‹Р№
+                _ => "#00BF00"    // РџРѕ СѓРјРѕР»С‡Р°РЅРёСЋ Р·РµР»С‘РЅС‹Р№
             };
 
             var statusCircle = new BoxView
             {
                 WidthRequest = 15,
                 HeightRequest = 15,
-                CornerRadius = 7.5f,            // половина Width/Height => круг
+                CornerRadius = 7.5f,            // РїРѕР»РѕРІРёРЅР° Width/Height => РєСЂСѓРі
                 Color = Color.FromArgb(statusColor),
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center
             };
 
-            // Время сканирования
-            var timeLabel = CreateLabel(student.ScanTime?.ToString("HH:mm") ?? "—", 13, "#7D7D7D");
+            // Р’СЂРµРјСЏ СЃРєР°РЅРёСЂРѕРІР°РЅРёСЏ
+            var timeLabel = CreateLabel(student.ScanTime?.ToString("HH:mm") ?? "вЂ”", 13, "#7D7D7D");
             timeLabel.HorizontalOptions = LayoutOptions.End;
 
-            // Размещаем элементы в сетке
-            // 1) Имя (колонка 0)
+            // Р Р°Р·РјРµС‰Р°РµРј СЌР»РµРјРµРЅС‚С‹ РІ СЃРµС‚РєРµ
+            // 1) РРјСЏ (РєРѕР»РѕРЅРєР° 0)
             Grid.SetRow(nameLabel, 0);
             Grid.SetColumn(nameLabel, 0);
             grid.Children.Add(nameLabel);
 
-            // 2) Цветной кружочек (колонка 1)
+            // 2) Р¦РІРµС‚РЅРѕР№ РєСЂСѓР¶РѕС‡РµРє (РєРѕР»РѕРЅРєР° 1)
             Grid.SetRow(statusCircle, 0);
             Grid.SetColumn(statusCircle, 1);
             grid.Children.Add(statusCircle);
 
-            // 3) Время (колонка 2)
+            // 3) Р’СЂРµРјСЏ (РєРѕР»РѕРЅРєР° 2)
             Grid.SetRow(timeLabel, 0);
             Grid.SetColumn(timeLabel, 2);
             grid.Children.Add(timeLabel);
 
-            // Вкладываем сетку в Frame
+            // Р’РєР»Р°РґС‹РІР°РµРј СЃРµС‚РєСѓ РІ Frame
             studentFrame.Content = grid;
 
-            // Добавляем обработчик нажатия, если нужно менять статус «по тапу»
+            // Р”РѕР±Р°РІР»СЏРµРј РѕР±СЂР°Р±РѕС‚С‡РёРє РЅР°Р¶Р°С‚РёСЏ, РµСЃР»Рё РЅСѓР¶РЅРѕ РјРµРЅСЏС‚СЊ СЃС‚Р°С‚СѓСЃ В«РїРѕ С‚Р°РїСѓВ»
             studentFrame.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = new Command(() => ChangeStudentStatus(student, statusCircle))
@@ -251,11 +251,11 @@ namespace AC
         {
             if (_role != "teacher")
             {
-                DisplayAlert("Доступ запрещен", "Только преподаватель может менять статус студента.", "OK");
+                DisplayAlert("Р”РѕСЃС‚СѓРї Р·Р°РїСЂРµС‰РµРЅ", "РўРѕР»СЊРєРѕ РїСЂРµРїРѕРґР°РІР°С‚РµР»СЊ РјРѕР¶РµС‚ РјРµРЅСЏС‚СЊ СЃС‚Р°С‚СѓСЃ СЃС‚СѓРґРµРЅС‚Р°.", "OK");
                 return;
             }
 
-            // Меняем статус по циклу green?yellow?red?green
+            // РњРµРЅСЏРµРј СЃС‚Р°С‚СѓСЃ РїРѕ С†РёРєР»Сѓ green?yellow?red?green
             var newStatus = student.Status switch
             {
                 "green" => "yellow",
@@ -266,19 +266,19 @@ namespace AC
 
             student.Status = newStatus;
 
-            // Обновляем цвет самого кружочка
+            // РћР±РЅРѕРІР»СЏРµРј С†РІРµС‚ СЃР°РјРѕРіРѕ РєСЂСѓР¶РѕС‡РєР°
             var newColor = newStatus switch
             {
-                "green" => "#00BF00",  // зелёный
-                "yellow" => "#FFD700",  // жёлтый (золото)
-                "red" => "#FF0000",  // красный
+                "green" => "#00BF00",  // Р·РµР»С‘РЅС‹Р№
+                "yellow" => "#FFD700",  // Р¶С‘Р»С‚С‹Р№ (Р·РѕР»РѕС‚Рѕ)
+                "red" => "#FF0000",  // РєСЂР°СЃРЅС‹Р№
                 _ => "#00BF00"
             };
 
-            // Применяем к нашему BoxView
+            // РџСЂРёРјРµРЅСЏРµРј Рє РЅР°С€РµРјСѓ BoxView
             statusCircle.Color = Color.FromArgb(newColor);
 
-            // Фиксируем, что есть несохранённые изменения
+            // Р¤РёРєСЃРёСЂСѓРµРј, С‡С‚Рѕ РµСЃС‚СЊ РЅРµСЃРѕС…СЂР°РЅС‘РЅРЅС‹Рµ РёР·РјРµРЅРµРЅРёСЏ
             _hasUnsavedChanges = true;
         }
 
@@ -322,7 +322,7 @@ namespace AC
         {
             if (_role != "teacher")
             {
-                await DisplayAlert("Доступ запрещен", "Только преподаватель может сохранять успеваемость.", "OK");
+                await DisplayAlert("Р”РѕСЃС‚СѓРї Р·Р°РїСЂРµС‰РµРЅ", "РўРѕР»СЊРєРѕ РїСЂРµРїРѕРґР°РІР°С‚РµР»СЊ РјРѕР¶РµС‚ СЃРѕС…СЂР°РЅСЏС‚СЊ СѓСЃРїРµРІР°РµРјРѕСЃС‚СЊ.", "OK");
                 return;
             }
 
@@ -350,7 +350,7 @@ namespace AC
 
         private async void OnSaveBtn(object sender, EventArgs e)
         {
-            // Сохраняем данные посещаемости и успеваемости
+            // РЎРѕС…СЂР°РЅСЏРµРј РґР°РЅРЅС‹Рµ РїРѕСЃРµС‰Р°РµРјРѕСЃС‚Рё Рё СѓСЃРїРµРІР°РµРјРѕСЃС‚Рё
             await SaveAttendanceAsync();
 
             foreach (var student in students)
@@ -358,10 +358,10 @@ namespace AC
                 await SavePerformanceAsync(student);
             }
 
-            await DisplayAlert("Сохранено", "Данные об успеваемости сохранены.", "OK");
+            await DisplayAlert("РЎРѕС…СЂР°РЅРµРЅРѕ", "Р”Р°РЅРЅС‹Рµ РѕР± СѓСЃРїРµРІР°РµРјРѕСЃС‚Рё СЃРѕС…СЂР°РЅРµРЅС‹.", "OK");
 
-            // Передаем параметры в RoomInfo, включая информацию о PIN-коде
-            var isPinRequired = _role != "teacher"; // Для преподавателей PIN не требуется
+            // РџРµСЂРµРґР°РµРј РїР°СЂР°РјРµС‚СЂС‹ РІ RoomInfo, РІРєР»СЋС‡Р°СЏ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ PIN-РєРѕРґРµ
+            var isPinRequired = _role != "teacher"; // Р”Р»СЏ РїСЂРµРїРѕРґР°РІР°С‚РµР»РµР№ PIN РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ
             await Navigation.PushAsync(new RoomInfo(_role, _uin, _lesson.Room, _token));
         }
 

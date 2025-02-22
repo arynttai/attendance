@@ -1,4 +1,4 @@
-﻿#if ANDROID
+#if ANDROID
 using Android.Content;
 using Android.Locations;
 using Android.Net.Wifi;
